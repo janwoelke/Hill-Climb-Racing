@@ -21,14 +21,14 @@ export class Car {
         this.wheels.forEach(wheel => wheel.setScale(factor));
 
         let group = Matter.Body.nextGroup(true)
-
+        //wheelYOffset normal: 135
         let xx = 300;
         let yy = 300;
         let width = 1200 * factor;
         let height = 425*factor;
         let wheelAOffset = -360*factor;
         let wheelBOffset = 317*factor;
-        let wheelYOffset = 135*factor;
+        let wheelYOffset = 150*factor;
         let wheelSize = 280*0.5*factor; // 28.07.2022: Faktor 0.5 eingefügt, da 280px der Durchmesser der Graphik ist, wheelSize aber der Radius des Matter-Kreises
 
         
@@ -48,18 +48,21 @@ export class Car {
                 density: 0.0002
             });
 
+        let friction = 0.8;
+
         let wheelA = Matter.Bodies.circle(xx + wheelAOffset, yy + wheelYOffset, wheelSize, {
             collisionFilter: {
                 group: group
             },
-            friction: 0.8,        });
+            friction: friction, 
+            restitution: 0.1       });
 
         let wheelB = Matter.Bodies.circle(xx + wheelBOffset, yy + wheelYOffset, wheelSize, {
             collisionFilter: {
                 group: group
             },
-            friction: 0.8,
-            restitution: 0.2
+            friction: friction,
+            restitution: 0.1
         });
 
         
