@@ -39,6 +39,8 @@ export default class Runninggame extends Phaser.Scene {
     fuelnumber: Phaser.GameObjects.Text;
     fuelcounter = 100;
 
+    params: Params;
+
     //Background
     private paralaxbackgrounds: {ratioX: number, sprite: Phaser.GameObjects.TileSprite} [] = []
 
@@ -77,10 +79,14 @@ export default class Runninggame extends Phaser.Scene {
         this.load.image("background_mountains", "/htdocs/assets/images/background_mountains.png")
         this.load.image("coin" , "/htdocs/assets/images/coin.png")
         this.load.image("house", "/htdocs/assets/images/house.png")
-
+        this.load.image("body","/htdocs/assets/images/body.png")
+        this.load.image("head","/htdocs/assets/images/head.png")
     }
 
 
+    init(params: Params){
+        this.params = params;
+    }
 
     create() {
         
@@ -211,9 +217,9 @@ export default class Runninggame extends Phaser.Scene {
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.cursors = this.input.keyboard.createCursorKeys();
     }
-
-   
-    collect(chassis: Phaser.GameObjects.Sprite, collectables: Phaser.Physics.Arcade.Sprite) {
+    
+    
+    collect(chassis: Phaser.Physics.Arcade.Sprite, collectables: Phaser.Physics.Arcade.Sprite) {
 
         if(collectables.texture.key == "coin") {
             
@@ -223,7 +229,7 @@ export default class Runninggame extends Phaser.Scene {
             
         }
     }
-
+    
     
     
 
@@ -262,6 +268,7 @@ export default class Runninggame extends Phaser.Scene {
         // graphics.lineStyle(border_color, border_alpha);
         graphics.fillStyle(color, alpha);
         graphics.fillPoints(poly.points, true);
+        
         let polygonString = polygonVectors.map(p => " " + p.x + " " + p.y).join().substring(1);
 
         //@ts-ignore
@@ -296,8 +303,13 @@ export default class Runninggame extends Phaser.Scene {
         let wheelA = this.car.matterWheels[0];
         let wheelB = this.car.matterWheels[1];
         let carBody = this.car.matterChassis;
+        let character_head = this.car.matterCharacter[0];
+        let character_body = this.car.matterCharacter[1];
         
+     
+        // this.cameras.main.setBounds(0, 0, this.map.width, this.map.height, false)
         this.cameras.main.centerOn(wheelA.position.x + 300, wheelA.position.y - 100)
+        this.cameras.main.zoom = 1
         // set the smooth zoom
         // const wheelRear = this.car.matterChassis
         // const currentZoom = this.cameras.main.zoom
@@ -365,7 +377,10 @@ export default class Runninggame extends Phaser.Scene {
         //     this.fuelnumber.setText("" + Math.round(this.fuelcounter))
         // }
        
+         
+
     }
 
+    
 }
 }

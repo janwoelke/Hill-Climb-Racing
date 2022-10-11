@@ -1,6 +1,9 @@
 export default class Startscreen extends Phaser.Scene {
     constructor() {
         super("startsceen");
+        this.params = {
+            coins: 0
+        };
     }
     preload() {
         this.load.image("background", "/htdocs/assets/images/background.png");
@@ -45,7 +48,10 @@ export default class Startscreen extends Phaser.Scene {
         });
         this.Enterevent = this.input.keyboard.addKey("enter");
         this.Enterevent.on("down", function () {
-            this.scene.start("Menu");
+            let params = {
+                coins: 12
+            };
+            this.scene.start("Menu", params);
         }, this);
         this.Fullscreenevent = this.input.keyboard.addKey("F");
         this.Fullscreenevent.on("down", function () {

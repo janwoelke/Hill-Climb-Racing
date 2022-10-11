@@ -1,0 +1,5 @@
+
+type Params = {
+    coins: number
+}
+

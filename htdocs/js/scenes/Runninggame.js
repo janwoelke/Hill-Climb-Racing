@@ -33,6 +33,11 @@ export default class Runninggame extends Phaser.Scene {
         this.load.image("background_mountains", "/htdocs/assets/images/background_mountains.png");
         this.load.image("coin", "/htdocs/assets/images/coin.png");
         this.load.image("house", "/htdocs/assets/images/house.png");
+        this.load.image("body", "/htdocs/assets/images/body.png");
+        this.load.image("head", "/htdocs/assets/images/head.png");
+    }
+    init(params) {
+        this.params = params;
     }
     create() {
         const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
@@ -180,7 +185,11 @@ export default class Runninggame extends Phaser.Scene {
         let wheelA = this.car.matterWheels[0];
         let wheelB = this.car.matterWheels[1];
         let carBody = this.car.matterChassis;
+        let character_head = this.car.matterCharacter[0];
+        let character_body = this.car.matterCharacter[1];
+        // this.cameras.main.setBounds(0, 0, this.map.width, this.map.height, false)
         this.cameras.main.centerOn(wheelA.position.x + 300, wheelA.position.y - 100);
+        this.cameras.main.zoom = 1;
         // set the smooth zoom
         // const wheelRear = this.car.matterChassis
         // const currentZoom = this.cameras.main.zoom

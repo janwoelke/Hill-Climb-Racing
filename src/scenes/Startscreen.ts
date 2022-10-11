@@ -6,11 +6,15 @@ export default class Startscreen extends Phaser.Scene {
     Enterevent;
     Fullscreenevent;
 
+    params: Params;
     
     constructor() {
 
     super("startsceen") 
-
+    
+    this.params = {
+        coins: 0
+    }
 
     }
 
@@ -104,7 +108,10 @@ export default class Startscreen extends Phaser.Scene {
 
         this.Enterevent.on("down", function() {
 
-                this.scene.start("Menu");
+                let params: Params = {
+                    coins: 12
+                }
+                this.scene.start("Menu", params);
             
            
 
