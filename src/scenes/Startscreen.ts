@@ -13,7 +13,10 @@ export default class Startscreen extends Phaser.Scene {
     super("startsceen") 
     
     this.params = {
-        coins: 0
+        coins: 0,
+        fuel: 0
+        
+
     }
 
     }
@@ -109,7 +112,8 @@ export default class Startscreen extends Phaser.Scene {
         this.Enterevent.on("down", function() {
 
                 let params: Params = {
-                    coins: 12
+                    coins: 0,
+                    fuel: 0
                 }
                 this.scene.start("Menu", params);
             

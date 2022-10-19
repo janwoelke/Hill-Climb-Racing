@@ -2,7 +2,8 @@ export default class Startscreen extends Phaser.Scene {
     constructor() {
         super("startsceen");
         this.params = {
-            coins: 0
+            coins: 0,
+            fuel: 0
         };
     }
     preload() {
@@ -49,7 +50,8 @@ export default class Startscreen extends Phaser.Scene {
         this.Enterevent = this.input.keyboard.addKey("enter");
         this.Enterevent.on("down", function () {
             let params = {
-                coins: 12
+                coins: 0,
+                fuel: 0
             };
             this.scene.start("Menu", params);
         }, this);

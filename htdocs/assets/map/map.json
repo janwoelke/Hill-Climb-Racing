@@ -2263,6 +2263,42 @@
                  "width":40,
                  "x":4416.66666666667,
                  "y":287.3335
+                }, 
+                {
+                 "gid":3,
+                 "height":60.4393939393945,
+                 "id":61,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":60.4393939393945,
+                 "x":2401.99999666667,
+                 "y":621.939393939394
+                }, 
+                {
+                 "gid":3,
+                 "height":60.4394,
+                 "id":63,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":60.4394,
+                 "x":10462.7499969697,
+                 "y":784.022724242424
+                }, 
+                {
+                 "gid":3,
+                 "height":60.4394,
+                 "id":64,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":60.4394,
+                 "x":20245.7803,
+                 "y":721.7803
                 }],
          "offsetx":2.66667,
          "offsety":-4,
@@ -2272,7 +2308,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":51,
+ "nextobjectid":65,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.1.2",
@@ -2835,6 +2871,19 @@
                  "type":"coins"
                 }
             },
+         "tilewidth":500
+        }, 
+        {
+         "columns":1,
+         "firstgid":3,
+         "image":"..\/images\/fuel.png",
+         "imageheight":500,
+         "imagewidth":500,
+         "margin":0,
+         "name":"fuel_tileset",
+         "spacing":0,
+         "tilecount":1,
+         "tileheight":500,
          "tilewidth":500
         }],
  "tilewidth":9449,

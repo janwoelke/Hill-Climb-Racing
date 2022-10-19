@@ -16,7 +16,8 @@ export default class Runninggame extends Phaser.Scene {
 
     car: Car;
     antrieb = "AWD"; 
-
+ 
+    
 
 
     spawnpoint;
@@ -41,8 +42,24 @@ export default class Runninggame extends Phaser.Scene {
 
     params: Params;
 
+    
+
     //Background
     private paralaxbackgrounds: {ratioX: number, sprite: Phaser.GameObjects.TileSprite} [] = []
+
+    //Settings
+    settings;
+    settingsetting;
+    settingmenu;
+    settingresume;
+    settingrect;
+    resumebutton;
+
+    settingtext;
+    settingmenutext;
+    settingresumetext;
+
+
 
     //Fahren des Autos MAX_SPEED normal: 0.75
     readonly MAX_SPEED = 0.5
@@ -78,14 +95,16 @@ export default class Runninggame extends Phaser.Scene {
         this.load.image("background_sky", "/htdocs/assets/images/background_sky.png")
         this.load.image("background_mountains", "/htdocs/assets/images/background_mountains.png")
         this.load.image("coin" , "/htdocs/assets/images/coin.png")
+        this.load.image("fuel", "/htdocs/assets/images/fuel.png")
         this.load.image("house", "/htdocs/assets/images/house.png")
         this.load.image("body","/htdocs/assets/images/body.png")
         this.load.image("head","/htdocs/assets/images/head.png")
+        this.load.image("settings", "/htdocs/assets/images/settings_icon.png")
     }
 
 
     init(params: Params){
-        this.params = params;
+        this.params = params;   
     }
 
     create() {
@@ -97,6 +116,71 @@ export default class Runninggame extends Phaser.Scene {
         // this.cameras.main.setRoundPixels(true);
         
         this.add.image(0, 0, "background_sky").setOrigin(0,0).setScale(2.5).setDepth(-3).setScrollFactor(0)
+        this.add.image(15, 15, "coin").setOrigin(0,0).setScale(0.15).setScrollFactor(0).setDepth(3)
+        this.add.image(1820 ,15, "settings").setOrigin(0,0).setScale(0.155).setScrollFactor(0).setDepth(3)
+
+        this.add.rectangle(1820, 15, 500,500, 0x000000, 0).setOrigin(0,0).setScrollFactor(0).setScale(0.155).setDepth(3).setInteractive().on("pointerdown", () =>{
+            
+            
+            
+            this.settingrect = this.add.rectangle(screenCenterX, screenCenterY, 600, 400, 0x565656, 1).setScrollFactor(0).setStrokeStyle(5, 0x000000, 1)
+            this.settingsetting = this.add.rectangle(screenCenterX, screenCenterY - 200, 550, 100, 0x565656, 1).setScrollFactor(0).setStrokeStyle(5, 0x000000, 1)
+            this.settingresume = this.add.rectangle(screenCenterX, screenCenterY -50, 550, 100, 0x565656, 1).setScrollFactor(0).setStrokeStyle(5, 0x000000, 1)
+            
+            this.settingmenu = this.add.rectangle(screenCenterX, screenCenterY +100, 550, 100, 0x565656, 1).setScrollFactor(0).setStrokeStyle(5, 0x000000, 1).setInteractive().on("pointerdown", () =>{
+                
+                let params: Params = {
+                    coins: this.coinscounter,
+                    fuel: this.fuelcounter
+                }
+                this.scene.start("Menu", params);
+            })
+            
+            this.settingtext = this.add.text(screenCenterX , screenCenterY - 200, "SETTINGS", {
+                
+                fontFamily: "hillclimbracing",
+                fontSize: "60px",
+                color: "#FFFFFF",
+                align: "center",
+                stroke: "#000000",
+                strokeThickness: 10
+                
+            }).setOrigin(0.5).setScrollFactor(0)
+            
+            this.settingmenutext = this.add.text(screenCenterX , screenCenterY +100, "MENU", {
+                
+                fontFamily: "hillclimbracing",
+                fontSize: "60px",
+                color: "#FFFFFF",
+                align: "center",
+                stroke: "#000000",
+                strokeThickness: 10
+                
+            }).setOrigin(0.5).setScrollFactor(0)
+            
+            this.settingresumetext = this.add.text(screenCenterX , screenCenterY -50, "RESUME", {
+                
+                fontFamily: "hillclimbracing",
+                fontSize: "60px",
+                color: "#FFFFFF",
+                align: "center",
+                stroke: "#000000",
+                strokeThickness: 10
+                
+            }).setOrigin(0.5).setScrollFactor(0)
+            
+            this.resumebutton = this.add.rectangle(screenCenterX, screenCenterY -50, 550, 100, 0x000000, 0).setScrollFactor(0).setInteractive().on( "pointerdown", () => {
+                this.settingrect.setVisible(false);
+                this.settingsetting.setVisible(false);
+                this.settingmenu.setVisible(false);
+                this.settingmenutext.setVisible(false);
+                this.settingtext.setVisible(false);  
+                this.settingresumetext.setVisible(false);
+                this.settingresume.setVisible(false);
+            })
+
+
+        })
 
         this.paralaxbackgrounds.push( {
             ratioX: 0.1,
@@ -106,7 +190,7 @@ export default class Runninggame extends Phaser.Scene {
        
         this.distance = this.add.text(screenCenterX, 50, "DISTANCE", {
             fontFamily: "hillclimbracing",
-            fontSize: "80px",
+            fontSize: "60px",
             color: "#FFFFFF",
             align: "center",
             stroke: "#000000",
@@ -118,7 +202,7 @@ export default class Runninggame extends Phaser.Scene {
 
 
             fontFamily: "hillclimbracing",
-            fontSize: "80px",
+            fontSize: "60px",
             color: "#FFFFFF",
             align: "center",
             stroke: "#000000",
@@ -127,7 +211,7 @@ export default class Runninggame extends Phaser.Scene {
         }).setScrollFactor(0).setOrigin(0.5)
 
 
-        this.fuelnumber = this.add.text(100,50, "" + this.fuelcounter,{
+        this.fuelnumber = this.add.text(1700,50, "" + this.fuelcounter + " %",{
             fontFamily: "hillclimbracing",
             fontSize: "60px",
             color: "#FFFFFF",
@@ -166,7 +250,7 @@ export default class Runninggame extends Phaser.Scene {
         Matter.Composite.add(this.world, this.car.matterCar);
         
         
-        this.coinsnumber = this.add.text(100,115, "" + this.coinscounter,{
+        this.coinsnumber = this.add.text(120, 55, "" + this.coinscounter,{
             fontFamily: "hillclimbracing",
             fontSize: "60px",
             color: "#FFFFFF",
@@ -178,12 +262,19 @@ export default class Runninggame extends Phaser.Scene {
         
         let collectables = this.map.getObjectLayer("Collectables");
         let coins = collectables.objects.find(obj => obj.type == "coins");
+        let fuel = collectables.objects.find(obj => obj.type == "fuel");
         var collectableslayer = this.map.createFromObjects("Collectables", [{
             gid: 2,
             key: "coin"
+        },
+        {
+            gid: 3,
+            key: "fuel"
+
         }
         ])
         
+
         collectableslayer.forEach( (collectables:Phaser.Physics.Arcade.Sprite) => {
             this.physics.world.enable(collectables);
             //@ts-ignore
@@ -227,14 +318,21 @@ export default class Runninggame extends Phaser.Scene {
             this.coinscounter++;
             this.coinsnumber.setText("" + this.coinscounter)
             
+        }else if(collectables.texture.key == "fuel"){
+            collectables.destroy(true);
+            this.fuelcounter = 100;
+            
+
+
         }
+
+        
     }
     
     
     
 
     private addPolygon(polygon: Phaser.Types.Tilemaps.TiledObject) {
-        // let polygon = objectLayer.objects.find(obj => obj.name == id_from_tiled);
         let polygonVectors: Phaser.Types.Math.Vector2Like[] = polygon.polygon;
 
         /**
@@ -246,7 +344,7 @@ export default class Runninggame extends Phaser.Scene {
             p.y += polygon.y;
         }
 
-        //        let polygonVectors:Phaser.Types.Math.Vector2Like[] = [{x: 0, y: 500}, {x: 800, y: 500}, {x: 800, y: 1000}, {x: 0, y: 1000} ];
+        // let polygonVectors:Phaser.Types.Math.Vector2Like[] = [{x: 0, y: 500}, {x: 800, y: 500}, {x: 800, y: 1000}, {x: 0, y: 1000} ];
         let poly = new Phaser.Geom.Polygon(polygonVectors);
         let graphics = this.add.graphics();
         
@@ -328,9 +426,12 @@ export default class Runninggame extends Phaser.Scene {
 
         
         //angularVelocity normal: 0.005
-        let angularVelocity = 0.003
+        let angularVelocity = 0.005
+        
+        this.distancecounter = (wheelA.position.x - 160) / 10
+        this.distancenumber.setText("" + Math.round(this.distancecounter / 10) + " m")
 
-        if (this.keyD.isDown || this.cursors.right.isDown) {
+        if (this.keyD.isDown && this.fuelcounter > 0 || this.cursors.right.isDown && this.fuelcounter > 0) {
           let newSpeed = 
             wheelB.angularSpeed <= 0 ? this.MAX_SPEED / 10 : wheelB.angularSpeed + this.ACCELERATION
           if (newSpeed > this.MAX_SPEED) newSpeed = this.MAX_SPEED
@@ -343,16 +444,14 @@ export default class Runninggame extends Phaser.Scene {
             Matter.Body.setAngularVelocity(wheelB, newSpeed);
           }
 
+          
 
-
-
-
-
-        this.distancecounter = this.distancecounter + 0.03 
-        this.distancenumber.setText("" + Math.round(this.distancecounter))
-        
-        //   if (!this.wheelsDown.rear && !this.wheelsDown.front) Matter.Body.setAngularVelocity(carBody, -angularVelocity)
-        } else if (this.keyA.isDown || this.cursors.left.isDown) {
+              this.fuelcounter = this.fuelcounter - 0.02;
+              this.fuelnumber.setText("" + Math.round(this.fuelcounter) + " %");
+    
+          
+                if (!this.wheelsDown.rear && !this.wheelsDown.front) Matter.Body.setAngularVelocity(carBody, -angularVelocity)
+        } else if (this.keyA.isDown && this.fuelcounter > 0 || this.cursors.left.isDown && this.fuelcounter > 0) {
           let newSpeed =
             wheelB.angularSpeed <= 0 ? this.MAX_SPEED_BACKWARDS / 10 : wheelB.angularSpeed + this.ACCELERATION_BACKWARDS
           if (newSpeed > this.MAX_SPEED_BACKWARDS) newSpeed = this.MAX_SPEED_BACKWARDS
@@ -365,22 +464,32 @@ export default class Runninggame extends Phaser.Scene {
               Matter.Body.setAngularVelocity(wheelB, -newSpeed);
           }
 
-          if(this.distancecounter > 0) {
-          this.distancecounter = this.distancecounter - 0.03
-          this.distancenumber.setText("" + Math.round(this.distancecounter))
-          }
-        //   if (!this.wheelsDown.rear && !this.wheelsDown.front) Matter.Body.setAngularVelocity(carBody, angularVelocity)
-        
-        
-        // for(this.fuelcounter; this.fuelcounter > 0; this.fuelcounter - 0.5){
-
-        //     this.fuelnumber.setText("" + Math.round(this.fuelcounter))
-        // }
+          
        
+
+              this.fuelcounter = this.fuelcounter - 0.02;
+              this.fuelnumber.setText("" + Math.round(this.fuelcounter) + " %");
+
          
+            
+                if (!this.wheelsDown.rear && !this.wheelsDown.front) Matter.Body.setAngularVelocity(carBody, angularVelocity)
 
     }
 
     
+
+        this.fuelcounter = this.fuelcounter - 0.01;
+        this.fuelnumber.setText("" + Math.round(this.fuelcounter) + " %");
+
+        if(this.fuelcounter < 0){
+            this.fuelcounter = 0;
+
+
+        }
+
+       
+
+
+
 }
 }
