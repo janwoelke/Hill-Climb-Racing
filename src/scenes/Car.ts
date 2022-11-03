@@ -17,14 +17,20 @@ export class Car {
 
     params: Params;
 
-    car_color;
+    car_color = "chassis_grey"
     
   
-    
+    init(params: Params){
+        this.params.carcolor = this.params.carcolor
+       
+    }
 
     constructor(private scene: Phaser.Scene, private engine: Matter.Engine, private world: Matter.World) {
 
+        
        
+        // this.car_color = this.params.carcolor; 
+        
         let factor = 0.2;
         this.character = scene.physics.add.sprite(300,300, "body");
         let body_scale = 0.5;
@@ -32,7 +38,7 @@ export class Car {
         this.wheels.push(scene.add.sprite(290, 310, "wheel"));
         this.wheels.push(scene.add.sprite(310, 310, "wheel"));
         
-        this.chassis = scene.physics.add.sprite(300, 300, "chassis");
+        this.chassis = scene.physics.add.sprite(300, 300, this.car_color);
        
         this.chassis.setScale(factor);
         this.wheels.forEach(wheel => wheel.setScale(factor));
@@ -233,11 +239,7 @@ export class Car {
 
     }
 
-    init(params: Params){
-        this.params = params;
-       
-        this.car_color = this.params.carcolor
-    }
+    
 
     adjustPhaserObjectsToMatter(){
         let chassisPosition = this.matterChassis.position;

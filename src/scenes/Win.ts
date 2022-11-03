@@ -1,4 +1,4 @@
-export default class Gameover extends Phaser.Scene{
+export default class Win extends Phaser.Scene{
 
     gameovertext;
    
@@ -22,7 +22,7 @@ export default class Gameover extends Phaser.Scene{
 
     constructor() {
 
-        super("Gameover") 
+        super("Win") 
     
     
     }
@@ -65,6 +65,8 @@ export default class Gameover extends Phaser.Scene{
         }).setScrollFactor(0).setOrigin(0.5)
 
         this.coinobj = this.add.image(screenCenterX - 900, screenCenterY -475,"coin").setOrigin(0.5).setScale(0.15);
+
+        this.coinobj = this.add.image(screenCenterX - 900, screenCenterY -475,"coin").setOrigin(0.5).setScale(0.15);
         // this.cointext = this.add.text(this.coinobj.x + 75, this.coinobj.y, this.params.coins.toString(), {
                     
         //     fontFamily: "hillclimbracing",
@@ -76,7 +78,7 @@ export default class Gameover extends Phaser.Scene{
             
         // }).setOrigin(0.5)
 
-        this.gameovertext = this.add.text(screenCenterX, screenCenterY - 350, "GAME OVER", {
+        this.gameovertext = this.add.text(screenCenterX, screenCenterY - 350, "YOU WON", {
                     
             fontFamily: "hillclimbracing",
             fontSize: "100px",

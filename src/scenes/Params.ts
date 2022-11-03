@@ -4,7 +4,7 @@ type Params = {
     fuel: number
     highscore: number
     score: number
-    carcolor: number
+    carcolor: string
     
 }
 

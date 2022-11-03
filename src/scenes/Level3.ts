@@ -100,20 +100,22 @@ export default class Level3 extends Phaser.Scene {
         this.load.image("background_sky", "/htdocs/assets/images/background_sky.png")
         this.load.image("background_mountains", "/htdocs/assets/images/background_mountains.png")
 
-        this.load.image("level2_sky", "/htdocs/assets/images/background/level2/sky.png")
-        this.load.image("level2_rocks", "/htdocs/assets/images/background/level2/rocks.png")
-        this.load.image("level2_plant", "/htdocs/assets/images/background/level2/plant.png")
-        this.load.image("level2_ground3", "/htdocs/assets/images/background/level2/ground_3.png")
-        this.load.image("level2_ground2", "/htdocs/assets/images/background/level2/ground_2.png")
-        this.load.image("level2_ground1", "/htdocs/assets/images/background/level2/ground_1.png")
-        this.load.image("level2_clouds1", "/htdocs/assets/images/background/level2/clouds_1.png")
-        this.load.image("level2_clouds2", "/htdocs/assets/images/background/level2/clouds_2.png")
+        this.load.image("level3_sky", "/htdocs/assets/images/background/level3/sky.png")
+        this.load.image("level3_rocks1", "/htdocs/assets/images/background/level3/rocks_1.png")
+        this.load.image("level3_rocks2", "/htdocs/assets/images/background/level3/rocks_2.png")
+        this.load.image("level3_clouds1", "/htdocs/assets/images/background/level3/clouds_1.png")
+        this.load.image("level3_clouds2", "/htdocs/assets/images/background/level3/clouds_2.png")
+        this.load.image("level3_clouds3", "/htdocs/assets/images/background/level3/clouds_3.png")
+        this.load.image("level3_clouds4", "/htdocs/assets/images/background/level3/clouds_4.png")
         
 
         
 
         this.load.image("coin" , "/htdocs/assets/images/coin.png")
         this.load.image("fuel", "/htdocs/assets/images/fuel.png")
+        this.load.image("diamond", "/htdocs/assets/images/diamond.png")
+        this.load.image("flag", "/htdocs/assets/images/flag.png")
+
         this.load.image("house", "/htdocs/assets/images/house.png")
         this.load.image("body","/htdocs/assets/images/body.png")
         this.load.image("head","/htdocs/assets/images/head.png")
@@ -222,37 +224,29 @@ export default class Level3 extends Phaser.Scene {
         })
         this.paralaxbackgrounds.push( {
             ratioX: 0.1,
-            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level2_sky").setOrigin(0,0).setScrollFactor(0).setDepth(-4).setAlpha(1)
+            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level3_rocks1").setOrigin(0,0).setScrollFactor(0).setDepth(-3).setAlpha(0.7)
+        })
+
+        this.paralaxbackgrounds.push( {
+            ratioX: 0.2,
+            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level3_rocks2").setOrigin(0,0).setScrollFactor(0).setDepth(-2).setAlpha(1)
         })
         this.paralaxbackgrounds.push( {
             ratioX: 0.1,
-            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level2_rocks").setOrigin(0,0).setScrollFactor(0).setDepth(-3).setAlpha(1)
-        })
-        this.paralaxbackgrounds.push( {
-            ratioX: 0.2,
-            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level2_plant").setOrigin(0,0).setScrollFactor(0).setDepth(-2).setAlpha(1)
-        })
-        this.paralaxbackgrounds.push( {
-            ratioX: 0.3,
-            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level2_ground3").setOrigin(0,0).setScrollFactor(0).setDepth(-2).setAlpha(1)
-        })
-        this.paralaxbackgrounds.push( {
-            ratioX: 0.4,
-            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level2_ground2").setOrigin(0,0).setScrollFactor(0).setDepth(-2).setAlpha(1)
-        })
-        this.paralaxbackgrounds.push( {
-            ratioX: 0.3,
-            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level2_ground1").setOrigin(0,0).setScrollFactor(0).setDepth(-2).setAlpha(1)
+            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level3_clouds1").setOrigin(0,0).setScrollFactor(0).setDepth(-3).setAlpha(0.4)
         })
         this.paralaxbackgrounds.push( {
             ratioX: 0.1,
-            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level2_clouds1").setOrigin(0,0).setScrollFactor(0).setDepth(-4).setAlpha(0.7)
+            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level3_clouds2").setOrigin(0,0).setScrollFactor(0).setDepth(-3).setAlpha(0.5)
         })
         this.paralaxbackgrounds.push( {
-            ratioX: 0.2,
-            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level2_clouds2").setOrigin(0,0).setScrollFactor(0).setDepth(-3).setAlpha(0.8)
+            ratioX: 0.05,
+            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level3_clouds3").setOrigin(0,0).setScrollFactor(0).setDepth(-4).setAlpha(0.2)
         })
-       
+        this.paralaxbackgrounds.push( {
+            ratioX: 0.3,
+            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level3_clouds4").setOrigin(0,0).setScrollFactor(0).setDepth(-2).setAlpha(0.8)
+        })
        
         this.distance = this.add.text(screenCenterX, 50, "DISTANCE", {
             fontFamily: "hillclimbracing",
@@ -319,7 +313,7 @@ export default class Level3 extends Phaser.Scene {
         Matter.Composite.add(this.world, this.car.matterCar);
         
         
-        this.coinsnumber = this.add.text(120, 55, "" + this.coinscounter,{
+        this.coinsnumber = this.add.text(200, 55, "" + this.coinscounter,{
             fontFamily: "hillclimbracing",
             fontSize: "60px",
             color: "#FFFFFF",
@@ -332,6 +326,8 @@ export default class Level3 extends Phaser.Scene {
         let collectables = this.Level3.getObjectLayer("Collectables");
         let coins = collectables.objects.find(obj => obj.type == "coins");
         let fuel = collectables.objects.find(obj => obj.type == "fuel");
+        let diamond = collectables.objects.find(obj => obj.type == "diamonds");
+        let flag = collectables.objects.find(obj => obj.type == "flag");
         var collectableslayer = this.Level3.createFromObjects("Collectables", [{
             gid: 2,
             key: "coin"
@@ -339,6 +335,16 @@ export default class Level3 extends Phaser.Scene {
         {
             gid: 3,
             key: "fuel"
+
+        },
+        {
+            gid: 4,
+            key: "diamond"
+
+        },
+        {
+            gid: 5,
+            key: "flag"
 
         }
         ])
@@ -392,6 +398,23 @@ export default class Level3 extends Phaser.Scene {
             this.fuelcounter = 100;
             
 
+
+        }else if(collectables.texture.key == "diamond"){
+            collectables.destroy(true);
+            this.coinscounter = this.coinscounter + 100;
+            this.coinsnumber.setText("" + this.coinscounter)
+
+        }else if(collectables.texture.key == "flag"){
+           
+            let params: Params = {
+                coins: this.coinscounter,
+                fuel: this.fuelcounter,
+                highscore: this.distancehighscore,
+                score: this.distancecounter,
+                carcolor: this.params.carcolor
+                
+            }
+            this.scene.start("Win", params)
 
         }
 
@@ -568,12 +591,31 @@ export default class Level3 extends Phaser.Scene {
 
         if(this.fuelcounter <= 0){
 
-            this.scene.start("Gameover", this.params);
-
+            // this.scene.start("Gameover", this.params);
+            let params: Params = {
+                coins: this.coinscounter,
+                fuel: this.fuelcounter,
+                highscore: this.distancehighscore,
+                score: this.distancecounter,
+                carcolor: this.params.carcolor
+                
+            }
+            this.scene.start("Gameover", params);
 
         }
        
+        if(wheelA.position.y > 2000){
 
+            let params: Params = {
+                coins: this.coinscounter,
+                fuel: this.fuelcounter,
+                highscore: this.distancehighscore,
+                score: this.distancecounter,
+                carcolor: this.params.carcolor
+                
+            }
+            this.scene.start("Gameover", params)
+        }
 
 
 }

@@ -1,8 +1,12 @@
-import { isLineBreak } from "../../node_modules/typescript/lib/typescript";
+import { isLineBreak, isThisTypeNode } from "../../node_modules/typescript/lib/typescript";
 
 export default class Menu extends Phaser.Scene {
 
     Fullscreenevent;
+    backgroundmusic;
+    soundbutton: Phaser.GameObjects.Image;
+    muted = true;
+    clicksound;
     shoprect;
     shoptext;
     shopimg;
@@ -18,6 +22,8 @@ export default class Menu extends Phaser.Scene {
     startrect;
     starttext;
     startimg;
+
+
 
     wheelrect;
     wheelrect2;
@@ -61,7 +67,7 @@ export default class Menu extends Phaser.Scene {
     x_button;
     x_image;
 
-    colorrect;
+    colorrect: Phaser.GameObjects.Rectangle;
     colorrect2;
     red;
     blue;
@@ -90,8 +96,12 @@ export default class Menu extends Phaser.Scene {
     coinobj;
     cointext;
     fuelcounter;
+    coinscounter;
+    coinsnumber;
 
     costs;
+
+    vhci;
 
    
 
@@ -122,6 +132,9 @@ export default class Menu extends Phaser.Scene {
         this.load.image("tuning_engine", "/htdocs/assets/images/car_engine.png")
         this.load.image("tuning_fuel", "/htdocs/assets/images/fuel.png")
         this.load.image("x_icon","/htdocs/assets/images/x_icon.png")
+        this.load.audio("music", ["/htdocs/assets/sounds/music.mp3", "/htdocs/assets/sounds/music.ogg"])
+        this.load.audio("click", ["/htdocs/assets/sounds/click.mp3", "/htdocs/assets/sounds/click.ogg"])
+        this.load.spritesheet("soundbutton", "/htdocs/assets/images/sound.png", {frameWidth: 395, frameHeight: 275});
     }
 
     init(params: Params){
@@ -131,13 +144,191 @@ export default class Menu extends Phaser.Scene {
 
     create() {
 
+        
+
+
 
         
         const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
         const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
+
+        this.clicksound = this.sound.add("click", {
+
+            volume: 0.5,
+            loop: false
+
+        });
+
+        this.backgroundmusic = this.sound.add("music", {
+
+            volume: 0.5,
+            loop: true
+
+        });
+
+        this.soundbutton = this.add.image(screenCenterX + 900, screenCenterY-475, "soundbutton", 1)
+        .setInteractive()
+        .setScrollFactor(0)
+        .setScale(0.25)
+        .setOrigin(0.5)
+        .setDepth(+10)
+        .on("pointerdown", () => {
+
+            if(this.muted == true) {
+                this.soundbutton.setFrame(0);
+                this.muted = false;
+                this.sound.play("click");
+                this.backgroundmusic.play()
+                
+
+            } else if (this.muted == false) {
+                this.soundbutton.setFrame(1);
+                this.muted = true;
+                this.sound.play("click")
+                this.backgroundmusic.stop()
+            }
+
+
+        })
         
+
+  
         this.add.image(screenCenterX , screenCenterY , "menu")
         
+        this.accelerationimg = this.add.image(screenCenterX - 200, screenCenterY - 150, "tuning_spring").setVisible(false).setDepth(+1)
+
+        this.accelerationrect = this.add.rectangle(screenCenterX - 200, screenCenterY - 150, 275, 150, 0x565656).setStrokeStyle(5, 0x000000, 1).setVisible(false)
+        this.engineimg = this.add.image(screenCenterX + 200, screenCenterY - 150, "tuning_engine").setVisible(false).setDepth(+1)
+
+        this.wheelrect2 = this.add.rectangle(screenCenterX - 600, screenCenterY , 275,75, 0x565656).setStrokeStyle(5, 0x000000, 1).setVisible(false)
+
+        this.wheelrect = this.add.rectangle(screenCenterX - 600, screenCenterY - 150, 275, 150, 0x565656).setStrokeStyle(5, 0x000000, 1).setVisible(false)
+        this.enginerect = this.add.rectangle(screenCenterX + 200, screenCenterY - 150, 275, 150, 0x565656).setStrokeStyle(5, 0x000000, 1).setVisible(false)
+        this.fuelrect = this.add.rectangle(screenCenterX + 600, screenCenterY - 150, 275, 150, 0x565656).setVisible(false)
+        this.wheelimg =  this.add.image(screenCenterX - 600, screenCenterY - 150, "tuning_wheel").setVisible(false)
+        this.fuelimg = this.add.image(screenCenterX + 600, screenCenterY - 160, "tuning_fuel").setVisible(false)
+        this.grey = this.add.rectangle(screenCenterX - 250, screenCenterY +25 , 250, 150, 0x999999).setVisible(false)
+        this.yellow = this.add.rectangle(screenCenterX +25, screenCenterY + 200, 250, 150, 0xeec900).setVisible(false)
+
+        this.engineleveltext = this.add.text(screenCenterX + 200, screenCenterY - 300, this.enginelevel + "/" + this.maxtuning, {
+            
+            fontFamily: "hillclimbracing",
+            fontSize: "60px",
+            color: "#FFFFFF",
+            align: "center",
+            stroke: "#000000",
+            strokeThickness: 10
+            
+        }).setOrigin(0.5).setVisible(false)
+
+        this.blue = this.add.rectangle(screenCenterX - 250, screenCenterY + 200, 250, 150, 0x00bfff).setVisible(false)
+
+        this.red = this.add.rectangle(screenCenterX - 250, screenCenterY - 150 , 250, 150, 0xff0000).setVisible(false)
+
+        this.colortext2 = this.add.text(screenCenterX + 100 , screenCenterY -150, "Choose Your Color", {
+            
+            fontFamily: "hillclimbracing",
+            fontSize: "40px",
+            color: "#FFFFFF",
+            align: "center",
+            stroke: "#000000",
+            strokeThickness: 10
+            
+        }).setOrigin(0.5).setDepth(+4).setVisible(false)
+
+        this.colorrect2 = this.add.rectangle(screenCenterX, screenCenterY, 800, 600, 0x565656).setStrokeStyle(5, 0x000000, 1).setDepth(+1).setVisible(false)
+
+        this.enginetuningtext2 = this.add.text(screenCenterX , screenCenterY, " um das Drehmoment zu steigern!", {
+            
+            fontFamily: "hillclimbracing",
+            fontSize: "50px",
+            color: "#FFFFFF",
+            align: "center",
+            stroke: "#000000",
+            strokeThickness: 10
+            
+        }).setOrigin(0.5).setDepth(+4).setVisible(false)
+
+        this.enginetuningtext = this.add.text(screenCenterX , screenCenterY -80, "Verbessere den Motor des Autos,", {
+            
+            fontFamily: "hillclimbracing",
+            fontSize: "50px",
+            color: "#FFFFFF",
+            align: "center",
+            stroke: "#000000",
+            strokeThickness: 10
+            
+        }).setOrigin(0.5).setDepth(+4).setVisible(false)
+
+        
+        this.accelerationtuningtext = this.add.text(screenCenterX , screenCenterY -80, "Verbessere die Federung des Autos,", {
+            
+            fontFamily: "hillclimbracing",
+            fontSize: "50px",
+            color: "#FFFFFF",
+            align: "center",
+            stroke: "#000000",
+            strokeThickness: 10
+            
+        }).setOrigin(0.5).setDepth(+4).setVisible(false)
+
+        this.wheeltuningtext2 = this.add.text(screenCenterX , screenCenterY, " um die Traktion zu steigern!", {
+            
+            fontFamily: "hillclimbracing",
+            fontSize: "50px",
+            color: "#FFFFFF",
+            align: "center",
+            stroke: "#000000",
+            strokeThickness: 10
+            
+        }).setOrigin(0.5).setDepth(+4).setVisible(false)
+
+        this.wheeltuningtext = this.add.text(screenCenterX , screenCenterY -80, "Verbessere die Reifen des Autos,", {
+            
+            fontFamily: "hillclimbracing",
+            fontSize: "50px",
+            color: "#FFFFFF",
+            align: "center",
+            stroke: "#000000",
+            strokeThickness: 10
+            
+        }).setOrigin(0.5).setDepth(+4).setVisible(false)
+
+        this.wheelleveltext = this.add.text(screenCenterX - 600, screenCenterY - 300, this.wheellevel + "/" + this.maxtuning, {
+            
+            fontFamily: "hillclimbracing",
+            fontSize: "60px",
+            color: "#FFFFFF",
+            align: "center",
+            stroke: "#000000",
+            strokeThickness: 10
+            
+        }).setOrigin(0.5).setVisible(false)
+
+        this.accelerationleveltext = this.add.text(screenCenterX - 200, screenCenterY - 300, this.accelerationlevel + "/" + this.maxtuning, {
+            
+            fontFamily: "hillclimbracing",
+            fontSize: "60px",
+            color: "#FFFFFF",
+            align: "center",
+            stroke: "#000000",
+            strokeThickness: 10
+            
+        }).setOrigin(0.5).setVisible(false)
+                    
+        this.colortext = this.add.text(screenCenterX - 600, screenCenterY -150, "Color", {
+            
+            fontFamily: "hillclimbracing",
+            fontSize: "40px",
+            color: "#FFFFFF",
+            align: "center",
+            stroke: "#000000",
+            strokeThickness: 10
+            
+        }).setOrigin(0.5).setDepth(+4).setVisible(false)
+
+        this.colorrect = this.add.rectangle(screenCenterX - 600, screenCenterY - 150, 275, 150, 0x565656).setStrokeStyle(5, 0x000000, 1).setVisible(false)
+
         this.coinobj = this.add.image(screenCenterX - 900, screenCenterY -475,"coin").setOrigin(0.5).setScale(0.15);
         // this.cointext = this.add.text(this.coinobj.x + 75, this.coinobj.y, this.params.coins.toString(), {
                     
@@ -150,6 +341,17 @@ export default class Menu extends Phaser.Scene {
             
         // }).setOrigin(0.5)
 
+        this.coinscounter = this.params.coins;
+
+        this.coinsnumber = this.add.text(200, 70, "" + this.coinscounter,{
+            fontFamily: "hillclimbracing",
+            fontSize: "60px",
+            color: "#FFFFFF",
+            align: "center",
+            stroke: "#000000",
+            strokeThickness: 10,
+
+        }).setScrollFactor(0).setOrigin(0.5)
 
         this.middlerect = this.add.rectangle(screenCenterX, screenCenterY- 200, 600, 350, 0xadd8e6).setStrokeStyle(7, 0x000000)
         this.middleobj = this.add.image(screenCenterX, this.middlerect.y + 25, "vehicle")
@@ -163,6 +365,56 @@ export default class Menu extends Phaser.Scene {
             strokeThickness: 10
             
         }).setOrigin(0.5)
+
+        this.fuelleveltext = this.add.text(screenCenterX + 600, screenCenterY - 300, this.fuellevel + "/" + this.maxtuning, {
+            
+            fontFamily: "hillclimbracing",
+            fontSize: "60px",
+            color: "#FFFFFF",
+            align: "center",
+            stroke: "#000000",
+            strokeThickness: 10
+            
+        }).setOrigin(0.5).setVisible(false)
+
+        this.accelerationtuningtext2 = this.add.text(screenCenterX , screenCenterY, " um die Fahrdynamik zu verbessern!", {
+        
+            fontFamily: "hillclimbracing",
+            fontSize: "50px",
+            color: "#FFFFFF",
+            align: "center",
+            stroke: "#000000",
+            strokeThickness: 10
+            
+        }).setOrigin(0.5).setDepth(+4).setVisible(false)
+
+        this.fueltuningtext = this.add.text(screenCenterX , screenCenterY -80, "Verbessere den Tank des Autos,", {
+            
+            fontFamily: "hillclimbracing",
+            fontSize: "50px",
+            color: "#FFFFFF",
+            align: "center",
+            stroke: "#000000",
+            strokeThickness: 10
+            
+        }).setOrigin(0.5).setDepth(+4).setVisible(false)
+
+        this.fueltuningtext2 = this.add.text(screenCenterX , screenCenterY, " um weiter zu fahren!", {
+            
+            fontFamily: "hillclimbracing",
+            fontSize: "50px",
+            color: "#FFFFFF",
+            align: "center",
+            stroke: "#000000",
+            strokeThickness: 10
+            
+        }).setOrigin(0.5).setDepth(+4).setVisible(false)
+
+        this.enginerect2 = this.add.rectangle(screenCenterX +200, screenCenterY , 275,75, 0x565656).setStrokeStyle(5, 0x000000, 1).setVisible(false)
+
+        this.accelerationrect2 = this.add.rectangle(screenCenterX - 200, screenCenterY , 275,75, 0x565656).setStrokeStyle(5, 0x000000, 1).setVisible(false)
+        this.fuelrect2 = this.add.rectangle(screenCenterX + 600, screenCenterY , 275,75, 0x565656).setStrokeStyle(5, 0x000000, 1).setVisible(false)
+        this.green = this.add.rectangle(screenCenterX + 25, screenCenterY + 25 , 250, 150, 0x228b22).setVisible(false)
 
         
   
@@ -209,7 +461,7 @@ export default class Menu extends Phaser.Scene {
                     this.engineleveltext.setVisible(false)
                     this.fuelleveltext.setVisible(false)
 
-                    this.wheelrect2.setVisible(false)
+              
                     this.accelerationrect2.setVisible(false)
                     this.enginerect2.setVisible(false)
                     this.fuelrect2.setVisible(false)
@@ -222,7 +474,13 @@ export default class Menu extends Phaser.Scene {
                     this.enginetuningtext2.setVisible(false)
                     this.fueltuningtext.setVisible(false)
                     this.fueltuningtext2.setVisible(false)
+                    this.colortext.setVisible(false)
+                    this.colorrect.setVisible(false)
 
+                    this.x_button.setVisible(false)
+                    this.x_image.setVisible(false)
+                    this.buyingrect.setVisible(false)
+                    this.buying_button.setVisible(false)
                    
                     
                 })
@@ -295,7 +553,22 @@ export default class Menu extends Phaser.Scene {
             this.enginetuningtext2.setVisible(false)
             this.fueltuningtext.setVisible(false)
             this.fueltuningtext2.setVisible(false)
-          
+
+            this.colortext.setVisible(false)
+            this.colorrect.setVisible(false)
+            this.colorrect2.setVisible(false)
+            this.colortext2.setVisible(false)
+            this.red.setVisible(false)
+            this.blue.setVisible(false)
+            this.green.setVisible(false)
+            this.grey.setVisible(false)
+            this.yellow.setVisible(false)
+
+            this.x_button.setVisible(false)
+            this.x_image.setVisible(false)
+            this.buyingrect.setVisible(false)
+            this.buying_button.setVisible(false)
+            
         })
         this.maptext = this.add.text(screenCenterX-280, screenCenterY+200, "Maps", {
             
@@ -326,6 +599,9 @@ export default class Menu extends Phaser.Scene {
             this.enginetuningtext2.setVisible(false)
             this.fueltuningtext.setVisible(false)
             this.fueltuningtext2.setVisible(false)
+
+            this.colortext.setVisible(false)
+            this.colorrect.setVisible(false)
         
         })
 
@@ -355,178 +631,113 @@ export default class Menu extends Phaser.Scene {
             this.middlerect.setVisible(false)
             this.middletext.setVisible(false)
 
-            this.wheelrect = this.add.rectangle(screenCenterX - 600, screenCenterY - 150, 275, 150, 0x565656).setStrokeStyle(5, 0x000000, 1).setInteractive().on("pointerdown", () =>{
+            this.colortext.setVisible(false)
+            this.colorrect.setVisible(false)
+            this.colorrect2.setVisible(false)
+            this.colortext2.setVisible(false)
+            this.red.setVisible(false)
+            this.blue.setVisible(false)
+            this.green.setVisible(false)
+            this.grey.setVisible(false)
+            this.yellow.setVisible(false)
+
+            this.wheelrect.setVisible(true).setInteractive().on("pointerdown", () =>{
                this.buyingrect.setVisible(true);
                this.buying_button.setVisible(true);
                this.x_button.setVisible(true);
                this.x_image.setVisible(true);
         
                
-                this.wheeltuningtext = this.add.text(screenCenterX , screenCenterY -80, "Verbessere die Reifen des Autos,", {
-            
-                    fontFamily: "hillclimbracing",
-                    fontSize: "50px",
-                    color: "#FFFFFF",
-                    align: "center",
-                    stroke: "#000000",
-                    strokeThickness: 10
-                    
-                }).setOrigin(0.5).setDepth(+4)
-
-                this.wheeltuningtext2 = this.add.text(screenCenterX , screenCenterY, " um die Traktion zu steigern!", {
-            
-                    fontFamily: "hillclimbracing",
-                    fontSize: "50px",
-                    color: "#FFFFFF",
-                    align: "center",
-                    stroke: "#000000",
-                    strokeThickness: 10
-                    
-                }).setOrigin(0.5).setDepth(+4)
+                this.wheeltuningtext.setVisible(true)
+                this.wheeltuningtext2.setVisible(true)
+                this.fueltuningtext.setVisible(false)
+                this.fueltuningtext2.setVisible(false)
+                this.accelerationtuningtext.setVisible(false)
+                this.accelerationtuningtext2.setVisible(false)
+                this.enginetuningtext.setVisible(false)
+                this.enginetuningtext2.setVisible(false)
+     
 
 
                
             })
-            this.wheelrect2 = this.add.rectangle(screenCenterX - 600, screenCenterY , 275,75, 0x565656).setStrokeStyle(5, 0x000000, 1)
+
             
-            this.accelerationrect = this.add.rectangle(screenCenterX - 200, screenCenterY - 150, 275, 150, 0x565656).setStrokeStyle(5, 0x000000, 1).setInteractive().on("pointerdown", () =>{
+     
+
+            this.wheelrect2.setVisible(true)
+            
+            this.accelerationrect.setVisible(true).setInteractive().on("pointerdown", () =>{
                 this.buyingrect.setVisible(true);
                this.buying_button.setVisible(true);
                this.x_button.setVisible(true);
                this.x_image.setVisible(true);
 
-               this.accelerationtuningtext = this.add.text(screenCenterX , screenCenterY -80, "Verbessere die Federung des Autos,", {
-            
-                fontFamily: "hillclimbracing",
-                fontSize: "50px",
-                color: "#FFFFFF",
-                align: "center",
-                stroke: "#000000",
-                strokeThickness: 10
-                
-            }).setOrigin(0.5).setDepth(+4)
+               this.accelerationtuningtext.setVisible(true)
+               this.accelerationtuningtext2.setVisible(true)
+               this.fueltuningtext.setVisible(false)
+               this.fueltuningtext2.setVisible(false)
+               this.enginetuningtext.setVisible(false)
+               this.enginetuningtext2.setVisible(false)
+               this.wheeltuningtext.setVisible(false)
+               this.wheeltuningtext2.setVisible(false)
 
-            this.accelerationtuningtext2 = this.add.text(screenCenterX , screenCenterY, " um die Fahrdynamik zu verbessern!", {
-        
-                fontFamily: "hillclimbracing",
-                fontSize: "50px",
-                color: "#FFFFFF",
-                align: "center",
-                stroke: "#000000",
-                strokeThickness: 10
-                
-            }).setOrigin(0.5).setDepth(+4)
+
+
              })
-            this.accelerationrect2 = this.add.rectangle(screenCenterX - 200, screenCenterY , 275,75, 0x565656).setStrokeStyle(5, 0x000000, 1)
+            this.accelerationrect2.setVisible(true)
             
-            this.enginerect = this.add.rectangle(screenCenterX + 200, screenCenterY - 150, 275, 150, 0x565656).setStrokeStyle(5, 0x000000, 1).setInteractive().on("pointerdown", () =>{
+            this.enginerect.setVisible(true).setInteractive().on("pointerdown", () =>{
                 this.buyingrect.setVisible(true);
                 this.buying_button.setVisible(true);
                 this.x_button.setVisible(true);
                 this.x_image.setVisible(true);
 
-                this.enginetuningtext = this.add.text(screenCenterX , screenCenterY -80, "Verbessere den Motor des Autos,", {
-            
-                    fontFamily: "hillclimbracing",
-                    fontSize: "50px",
-                    color: "#FFFFFF",
-                    align: "center",
-                    stroke: "#000000",
-                    strokeThickness: 10
-                    
-                }).setOrigin(0.5).setDepth(+4)
+                this.enginetuningtext.setVisible(true)
     
-                this.enginetuningtext2 = this.add.text(screenCenterX , screenCenterY, " um das Drehmoment zu steigern!", {
-            
-                    fontFamily: "hillclimbracing",
-                    fontSize: "50px",
-                    color: "#FFFFFF",
-                    align: "center",
-                    stroke: "#000000",
-                    strokeThickness: 10
-                    
-                }).setOrigin(0.5).setDepth(+4)
+                this.enginetuningtext2.setVisible(true)
+
+                this.fueltuningtext.setVisible(false)
+                this.fueltuningtext2.setVisible(false)
+                this.accelerationtuningtext.setVisible(false)
+                this.accelerationtuningtext2.setVisible(false)
+                this.enginetuningtext.setVisible(true)
+                this.enginetuningtext2.setVisible(true)
+                this.wheeltuningtext.setVisible(false)
+                this.wheeltuningtext2.setVisible(false)
+
              })
-            this.enginerect2 = this.add.rectangle(screenCenterX +200, screenCenterY , 275,75, 0x565656).setStrokeStyle(5, 0x000000, 1)
+            this.enginerect2.setVisible(true)
             
-            this.fuelrect = this.add.rectangle(screenCenterX + 600, screenCenterY - 150, 275, 150, 0x565656).setStrokeStyle(5, 0x000000, 1).setInteractive().on("pointerdown", () =>{
+            this.fuelrect.setVisible(true).setStrokeStyle(5, 0x000000, 1).setInteractive().on("pointerdown", () =>{
                 this.buyingrect.setVisible(true);
                 this.buying_button.setVisible(true);
                 this.x_button.setVisible(true);
                 this.x_image.setVisible(true);
 
-                this.fueltuningtext = this.add.text(screenCenterX , screenCenterY -80, "Verbessere den Tank des Autos,", {
-            
-                    fontFamily: "hillclimbracing",
-                    fontSize: "50px",
-                    color: "#FFFFFF",
-                    align: "center",
-                    stroke: "#000000",
-                    strokeThickness: 10
-                    
-                }).setOrigin(0.5).setDepth(+4)
-    
-                this.fueltuningtext2 = this.add.text(screenCenterX , screenCenterY, " um weiter zu fahren!", {
-            
-                    fontFamily: "hillclimbracing",
-                    fontSize: "50px",
-                    color: "#FFFFFF",
-                    align: "center",
-                    stroke: "#000000",
-                    strokeThickness: 10
-                    
-                }).setOrigin(0.5).setDepth(+4)
+                this.fueltuningtext.setVisible(true)
+                this.fueltuningtext2.setVisible(true)
+                this.accelerationtuningtext.setVisible(false)
+                this.accelerationtuningtext2.setVisible(false)
+                this.enginetuningtext.setVisible(false)
+                this.enginetuningtext2.setVisible(false)
+                this.wheeltuningtext.setVisible(false)
+                this.wheeltuningtext2.setVisible(false)
+
              })
-            this.fuelrect2 = this.add.rectangle(screenCenterX + 600, screenCenterY , 275,75, 0x565656).setStrokeStyle(5, 0x000000, 1)
+            this.fuelrect2.setVisible(true)
 
-            this.accelerationimg = this.add.image(screenCenterX - 200, screenCenterY - 150, "tuning_spring" ).setScale(0.4, 0.4)
-            this.wheelimg =  this.add.image(screenCenterX - 600, screenCenterY - 150, "tuning_wheel").setScale(0.4, 0.4)
-            this.engineimg = this.add.image(screenCenterX + 200, screenCenterY - 150, "tuning_engine").setScale(0.4, 0.4)
-            this.fuelimg = this.add.image(screenCenterX + 600, screenCenterY - 160, "tuning_fuel").setScale(0.4, 0.4)
+            this.accelerationimg.setVisible(true).setScale(0.4, 0.4)
+            this.wheelimg.setVisible(true).setScale(0.4, 0.4)
+            this.engineimg.setVisible(true).setScale(0.4, 0.4)
+            this.fuelimg.setVisible(true).setScale(0.4, 0.4)
 
-            this.wheelleveltext = this.add.text(screenCenterX - 600, screenCenterY - 300, this.wheellevel + "/" + this.maxtuning, {
-            
-            fontFamily: "hillclimbracing",
-            fontSize: "60px",
-            color: "#FFFFFF",
-            align: "center",
-            stroke: "#000000",
-            strokeThickness: 10
-            
-        }).setOrigin(0.5)
+            this.wheelleveltext.setVisible(true)
 
-        this.accelerationleveltext = this.add.text(screenCenterX - 200, screenCenterY - 300, this.accelerationlevel + "/" + this.maxtuning, {
-            
-            fontFamily: "hillclimbracing",
-            fontSize: "60px",
-            color: "#FFFFFF",
-            align: "center",
-            stroke: "#000000",
-            strokeThickness: 10
-            
-        }).setOrigin(0.5)
+        this.accelerationleveltext.setVisible(true)
 
-        this.engineleveltext = this.add.text(screenCenterX + 200, screenCenterY - 300, this.enginelevel + "/" + this.maxtuning, {
-            
-            fontFamily: "hillclimbracing",
-            fontSize: "60px",
-            color: "#FFFFFF",
-            align: "center",
-            stroke: "#000000",
-            strokeThickness: 10
-            
-        }).setOrigin(0.5)
-            
-        this.fuelleveltext = this.add.text(screenCenterX + 600, screenCenterY - 300, this.fuellevel + "/" + this.maxtuning, {
-            
-            fontFamily: "hillclimbracing",
-            fontSize: "60px",
-            color: "#FFFFFF",
-            align: "center",
-            stroke: "#000000",
-            strokeThickness: 10
-            
-        }).setOrigin(0.5)
+        this.engineleveltext.setVisible(true)
+        this.fuelleveltext.setVisible(true)
 
         })
         this.tuningtext = this.add.text(screenCenterX+280, screenCenterY+200, "Tuning", {
@@ -567,61 +778,88 @@ export default class Menu extends Phaser.Scene {
             this.middleobj.alpha = 0;
             this.middlerect.setVisible(false)
             this.middletext.setVisible(false)
+            this.x_button.setVisible(false)
+            this.x_image.setVisible(false)
+            this.buyingrect.setVisible(false)
+            this.buying_button.setVisible(false)
             
-            
-            this.colortext = this.add.text(screenCenterX - 600, screenCenterY -150, "Color", {
-            
-                fontFamily: "hillclimbracing",
-                fontSize: "40px",
-                color: "#FFFFFF",
-                align: "center",
-                stroke: "#000000",
-                strokeThickness: 10
-                
-            }).setOrigin(0.5).setDepth(+4)
-            this.colorrect = this.add.rectangle(screenCenterX - 600, screenCenterY - 150, 275, 150, 0x565656).setStrokeStyle(5, 0x000000, 1).setInteractive().on("pointerdown", () =>{
-                this.colorrect2 = this.add.rectangle(screenCenterX, screenCenterY, 800, 600, 0x565656).setStrokeStyle(5, 0x000000, 1).setDepth(+1)
-                this.colortext2 = this.add.text(screenCenterX + 100 , screenCenterY -150, "Choose Your Color", {
-            
-                    fontFamily: "hillclimbracing",
-                    fontSize: "40px",
-                    color: "#FFFFFF",
-                    align: "center",
-                    stroke: "#000000",
-                    strokeThickness: 10
-                    
-                }).setOrigin(0.5).setDepth(+4)
-                this.red = this.add.rectangle(screenCenterX - 250, screenCenterY - 150 , 250, 150, 0xff0000).setStrokeStyle(5, 0x000000, 1).setDepth(+2).setInteractive().on("pointerdown", () =>{
-                  
-                        this.params.carcolor = 1
 
+
+            this.colortext.setVisible(true)
+
+            this.colorrect.setVisible(true).setInteractive().on("pointerdown", () =>{
+            
+               
+                this.colorrect2.setVisible(true)
+                this.colortext2.setVisible(true)
+                this.red.setVisible(true).setStrokeStyle(5, 0x000000, 1).setDepth(+2).setInteractive().on("pointerdown", () =>{
+                  
+                        this.params.carcolor = "chassis"
+                        this.colorrect2.setVisible(false)
+                        this.red.setVisible(false)
+                        this.blue.setVisible(false)
+                        this.green.setVisible(false)
+                        this.yellow.setVisible(false)
+                        this.grey.setVisible(false)
+                        this.colortext2.setVisible(false)
+                        console.log(this.params.carcolor)
+                        
                 })
-                this.blue = this.add.rectangle(screenCenterX - 250, screenCenterY + 200, 250, 150, 0x00bfff).setStrokeStyle(5, 0x000000, 1).setDepth(+2).setInteractive().on("pointerdown", () =>{
+                this.blue.setVisible(true).setStrokeStyle(5, 0x000000, 1).setDepth(+2).setInteractive().on("pointerdown", () =>{
                    
-                        this.params.carcolor = 2
+                        this.params.carcolor = "chassis_blue"
+                        this.colorrect2.setVisible(false)
+                        this.red.setVisible(false)
+                        this.blue.setVisible(false)
+                        this.green.setVisible(false)
+                        this.yellow.setVisible(false)
+                        this.grey.setVisible(false)
+                        this.colortext2.setVisible(false)
                         console.log(this.params.carcolor)
                     
 
                 })
-                this.green = this.add.rectangle(screenCenterX + 25, screenCenterY + 25 , 250, 150, 0x228b22).setStrokeStyle(5, 0x000000, 1).setDepth(+2).setInteractive().on("pointerdown", () =>{
+                this.green.setVisible(true).setStrokeStyle(5, 0x000000, 1).setDepth(+2).setInteractive().on("pointerdown", () =>{
                    
-                        this.params.carcolor = 3
-                    
-
+                        this.params.carcolor = "chassis_green"
+                        this.colorrect2.setVisible(false)
+                        this.red.setVisible(false)
+                        this.blue.setVisible(false)
+                        this.green.setVisible(false)
+                        this.yellow.setVisible(false)
+                        this.grey.setVisible(false)
+                        this.colortext2.setVisible(false)
+                        console.log(this.params.carcolor)
                 })
-                this.yellow = this.add.rectangle(screenCenterX +25, screenCenterY + 200, 250, 150, 0xeec900).setStrokeStyle(5, 0x000000, 1).setDepth(+2).setInteractive().on("pointerdown", () =>{
+                this.yellow.setVisible(true).setStrokeStyle(5, 0x000000, 1).setDepth(+2).setInteractive().on("pointerdown", () =>{
                    
-                        this.params.carcolor = 4
-                    
-
+                        this.params.carcolor = "chassis_yellow"
+                        this.colorrect2.setVisible(false)
+                        this.red.setVisible(false)
+                        this.blue.setVisible(false)
+                        this.green.setVisible(false)
+                        this.yellow.setVisible(false)
+                        this.grey.setVisible(false)
+                        this.colortext2.setVisible(false)
+                        console.log(this.params.carcolor)
                 })
-                this.grey = this.add.rectangle(screenCenterX - 250, screenCenterY +25 , 250, 150, 0x999999).setStrokeStyle(5, 0x000000, 1).setDepth(+2).setInteractive().on("pointerdown", () =>{
+                this.grey.setVisible(true).setStrokeStyle(5, 0x000000, 1).setDepth(+2).setInteractive().on("pointerdown", () =>{
                  
-                        this.params.carcolor = 5
-                    
+                        this.params.carcolor = "chassis_grey"
+                        this.colorrect2.setVisible(false)
+                        this.red.setVisible(false)
+                        this.blue.setVisible(false)
+                        this.green.setVisible(false)
+                        this.yellow.setVisible(false)
+                        this.grey.setVisible(false)
+                        this.colortext2.setVisible(false)
+                        console.log(this.params.carcolor)
                 })
+
+                
                 
             })
+            
 
 
             this.wheelrect.setVisible(false);
@@ -656,6 +894,10 @@ export default class Menu extends Phaser.Scene {
 
             
         })
+
+     
+
+    
         this.shoptext = this.add.text(screenCenterX-560, screenCenterY+200, "Shop", {
             
             fontFamily: "hillclimbracing",
@@ -672,7 +914,8 @@ export default class Menu extends Phaser.Scene {
         
         this.startrect = this.add.rectangle(screenCenterX+560, screenCenterY + 200, 275, 150, 0x49B675).setStrokeStyle(5, 0x000000, 1).setInteractive().on("pointerdown", () => {
             
-            this.scene.start("Level2")
+            this.scene.start("Level3")
+            this.backgroundmusic.stop()
             
             
             
@@ -709,7 +952,7 @@ export default class Menu extends Phaser.Scene {
     
         }, this);
 
-
+      
 
 
 
@@ -722,6 +965,8 @@ export default class Menu extends Phaser.Scene {
     
 
     update() {
+
+       
 
        
     }

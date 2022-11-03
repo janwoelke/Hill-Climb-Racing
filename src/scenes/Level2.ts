@@ -319,7 +319,7 @@ export default class Level2 extends Phaser.Scene {
         Matter.Composite.add(this.world, this.car.matterCar);
         
         
-        this.coinsnumber = this.add.text(120, 55, "" + this.coinscounter,{
+        this.coinsnumber = this.add.text(140, 55, "" + this.coinscounter,{
             fontFamily: "hillclimbracing",
             fontSize: "60px",
             color: "#FFFFFF",

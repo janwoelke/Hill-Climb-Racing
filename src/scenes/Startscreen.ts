@@ -1,10 +1,14 @@
 export default class Startscreen extends Phaser.Scene {
 
-    Bigtext: Phaser.GameObjects.Text;
-    Bigtext2: Phaser.GameObjects.Text;
     Starttext: Phaser.GameObjects.Text;
     Enterevent;
     Fullscreenevent;
+    backgroundvideo;
+    backgroundmusic;
+    soundbutton: Phaser.GameObjects.Image;
+    muted = true;
+    clicksound;
+    
 
     params: Params;
     
@@ -17,7 +21,7 @@ export default class Startscreen extends Phaser.Scene {
         fuel: 0,
         highscore: 0,
         score: 0,
-        carcolor: 1
+        carcolor: "chassis"
         
         
 
@@ -30,8 +34,10 @@ export default class Startscreen extends Phaser.Scene {
     preload() {
 
         this.load.image("background", "/htdocs/assets/images/background.png")
-
-     
+        this.load.video("startscreen", "/htdocs/assets/videos/startscreen.mp4", "loadeddata", false, true)
+        this.load.audio("music", ["/htdocs/assets/sounds/music.mp3", "/htdocs/assets/sounds/music.ogg"])
+        this.load.audio("click", ["/htdocs/assets/sounds/click.mp3", "/htdocs/assets/sounds/click.ogg"])
+        this.load.spritesheet("soundbutton", "/htdocs/assets/images/sound.png", {frameWidth: 395, frameHeight: 275});
         
     }
 
@@ -45,39 +51,47 @@ export default class Startscreen extends Phaser.Scene {
         const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
         const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
 
-        this.add.image(screenCenterX, screenCenterY, "background").setScrollFactor(0).setOrigin(0.5).setScale(1.5)
+        this.backgroundvideo = this.add.video(screenCenterX, screenCenterY, "startscreen").play(true)
 
+        this.clicksound = this.sound.add("click", {
 
-        this.Bigtext = this.add.text(screenCenterX, 200, "HILL CLIMB", {
+            volume: 0.5,
+            loop: false
 
-            fontFamily: "hillclimbracing",
-            fontSize: "150px",
-            color: "#FFFFFF",
-            align: "center",
-            stroke: "#000000",
-            strokeThickness: 10,
+        });
 
-            
+        this.backgroundmusic = this.sound.add("music", {
+
+            volume: 0.5,
+            loop: true
+
+        });
+
+        this.soundbutton = this.add.image(50, 50, "soundbutton", 1)
+        .setInteractive()
+        .setScrollFactor(0)
+        .setScale(0.25)
+        .setOrigin(0.5)
+
+        .on("pointerdown", () => {
+
+            if(this.muted == true) {
+                this.soundbutton.setFrame(0);
+                this.muted = false;
+                this.sound.play("click");
+                this.backgroundmusic.play()
+                
+
+            } else if (this.muted == false) {
+                this.soundbutton.setFrame(1);
+                this.muted = true;
+                this.sound.play("click")
+                this.backgroundmusic.stop()
+            }
 
 
         })
-        .setOrigin(0.5).setScrollFactor(0).setShadow(3, 3, 'rgba(0,0,0,0.5)', 5).setRotation(-0.10);
         
-
-        
-        this.Bigtext2 = this.add.text(screenCenterX, 350, "RACING", {
-
-            fontFamily: "hillclimbracing",
-            fontSize: "150px",
-            color: "#FFFFFF",
-            align: "center",
-            stroke: "#000000",
-            strokeThickness: 10,
-            
-
-
-        })
-        .setOrigin(0.5).setScrollFactor(0).setShadow(3, 3, 'rgba(0,0,0,0.5)', 5).setRotation(-0.10);;
         
 
         
@@ -124,6 +138,7 @@ export default class Startscreen extends Phaser.Scene {
                     
                     
                 }
+                this.backgroundmusic.stop()
                 this.scene.start("Menu", params);
             
            
@@ -138,10 +153,12 @@ export default class Startscreen extends Phaser.Scene {
             if(this.scale.isFullscreen) {
                 
                 this.scale.stopFullscreen();
+                this.backgroundvideo.setScale(1)    
                 
             } else {
-    
+                
                 this.scale.startFullscreen();
+                this.backgroundvideo.setScale(1.1)    
     
             }
     
