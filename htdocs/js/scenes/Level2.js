@@ -1,12 +1,13 @@
 import { Car } from "./Car.js";
-export default class Runninggame extends Phaser.Scene {
+export default class Level2 extends Phaser.Scene {
     constructor() {
-        super("Runninggame");
+        super("Level2");
         this.bodies = [];
         this.matterBodies = [];
         this.antrieb = "AWD";
         this.coinscounter = 0;
         this.distancecounter = 0;
+        this.fuelcounter = 3;
         //Background
         this.paralaxbackgrounds = [];
         //Fahren des Autos MAX_SPEED normal: 0.75
@@ -24,12 +25,20 @@ export default class Runninggame extends Phaser.Scene {
         };
     }
     preload() {
-        this.load.image("spritesheet", "/htdocs/assets/images/spritesheet.png");
-        this.load.tilemapTiledJSON("map", "/htdocs/assets/map/map.json");
+        this.load.image("spritesheet", "/htdocs/assets/images/spritesheet.png"); // Pabst 31.10.2022 (Zeile eingefügt)
+        this.load.tilemapTiledJSON("Level2", "/htdocs/assets/map/map2.json");
         this.load.image("chassis", "/htdocs/assets/images/Car.png");
         this.load.image("wheel", "/htdocs/assets/images/Wheel.png");
         this.load.image("background_sky", "/htdocs/assets/images/background_sky.png");
         this.load.image("background_mountains", "/htdocs/assets/images/background_mountains.png");
+        this.load.image("level2_sky", "/htdocs/assets/images/background/level2/sky.png");
+        this.load.image("level2_rocks", "/htdocs/assets/images/background/level2/rocks.png");
+        this.load.image("level2_plant", "/htdocs/assets/images/background/level2/plant.png");
+        this.load.image("level2_ground3", "/htdocs/assets/images/background/level2/ground_3.png");
+        this.load.image("level2_ground2", "/htdocs/assets/images/background/level2/ground_2.png");
+        this.load.image("level2_ground1", "/htdocs/assets/images/background/level2/ground_1.png");
+        this.load.image("level2_clouds1", "/htdocs/assets/images/background/level2/clouds_1.png");
+        this.load.image("level2_clouds2", "/htdocs/assets/images/background/level2/clouds_2.png");
         this.load.image("coin", "/htdocs/assets/images/coin.png");
         this.load.image("fuel", "/htdocs/assets/images/fuel.png");
         this.load.image("house", "/htdocs/assets/images/house.png");
@@ -53,22 +62,10 @@ export default class Runninggame extends Phaser.Scene {
         const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
         // this.cameras.main.startFollow(this.car,true, 0.5, 0.5, 0.5, 0.5)
         // this.cameras.main.setRoundPixels(true);
-        this.add.image(0, 0, "background_sky").setOrigin(0, 0).setScale(2.5).setDepth(-3).setScrollFactor(0);
         this.add.image(15, 15, "coin").setOrigin(0, 0).setScale(0.15).setScrollFactor(0).setDepth(3);
         this.add.image(1820, 15, "settings").setOrigin(0, 0).setScale(0.155).setScrollFactor(0).setDepth(3);
         this.fuelcounter = 100;
-        let particles = this.add.particles("dirt");
-        particles.createEmitter({
-            x: this.particlesX,
-            y: this.particlesY,
-            lifespan: 500,
-            speed: { min: 100, max: 300 },
-            angle: 210,
-            gravityY: 300,
-            scale: { start: 0.2, end: 0 },
-            quantity: 0.3,
-            blendMode: "ADD"
-        });
+        //Parallaktischer Hintergrund
         this.add.rectangle(1820, 15, 500, 500, 0x000000, 0).setOrigin(0, 0).setScrollFactor(0).setScale(0.155).setDepth(3).setInteractive().on("pointerdown", () => {
             this.settingrect = this.add.rectangle(screenCenterX, screenCenterY, 600, 400, 0x565656, 1).setScrollFactor(0).setStrokeStyle(5, 0x000000, 1);
             this.settingsetting = this.add.rectangle(screenCenterX, screenCenterY - 200, 550, 100, 0x565656, 1).setScrollFactor(0).setStrokeStyle(5, 0x000000, 1);
@@ -119,7 +116,35 @@ export default class Runninggame extends Phaser.Scene {
         });
         this.paralaxbackgrounds.push({
             ratioX: 0.1,
-            sprite: this.add.tileSprite(0, 690, innerWidth, 400, "background_mountains").setOrigin(0, 0).setScrollFactor(0).setDepth(-3).setAlpha(0.7)
+            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level2_sky").setOrigin(0, 0).setScrollFactor(0).setDepth(-4).setAlpha(1)
+        });
+        this.paralaxbackgrounds.push({
+            ratioX: 0.1,
+            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level2_rocks").setOrigin(0, 0).setScrollFactor(0).setDepth(-3).setAlpha(1)
+        });
+        this.paralaxbackgrounds.push({
+            ratioX: 0.2,
+            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level2_plant").setOrigin(0, 0).setScrollFactor(0).setDepth(-2).setAlpha(1)
+        });
+        this.paralaxbackgrounds.push({
+            ratioX: 0.3,
+            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level2_ground3").setOrigin(0, 0).setScrollFactor(0).setDepth(-2).setAlpha(1)
+        });
+        this.paralaxbackgrounds.push({
+            ratioX: 0.4,
+            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level2_ground2").setOrigin(0, 0).setScrollFactor(0).setDepth(-2).setAlpha(1)
+        });
+        this.paralaxbackgrounds.push({
+            ratioX: 0.3,
+            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level2_ground1").setOrigin(0, 0).setScrollFactor(0).setDepth(-2).setAlpha(1)
+        });
+        this.paralaxbackgrounds.push({
+            ratioX: 0.1,
+            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level2_clouds1").setOrigin(0, 0).setScrollFactor(0).setDepth(-4).setAlpha(0.7)
+        });
+        this.paralaxbackgrounds.push({
+            ratioX: 0.2,
+            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level2_clouds2").setOrigin(0, 0).setScrollFactor(0).setDepth(-3).setAlpha(0.8)
         });
         this.distance = this.add.text(screenCenterX, 50, "DISTANCE", {
             fontFamily: "hillclimbracing",
@@ -144,17 +169,17 @@ export default class Runninggame extends Phaser.Scene {
             align: "center",
             stroke: "#000000",
             strokeThickness: 10,
-        }).setScrollFactor(0).setOrigin(0.5);
+        }).setScrollFactor(0).setOrigin(0.5).setDepth(+3);
         this.engine = Matter.Engine.create({
-            gravity: { y: 0.2 }
+            gravity: { y: 0.4 }
         });
         this.world = this.engine.world;
-        this.map = this.make.tilemap({
-            key: "map"
+        this.Level2 = this.make.tilemap({
+            key: "Level2"
         });
-        const spritesheet = this.map.addTilesetImage("HillClimbRacing_testmap", "spritesheet");
-        const base = this.map.createLayer("Map", spritesheet);
-        let objectLayer = this.map.getObjectLayer("Collisions");
+        const spritesheet = this.Level2.addTilesetImage("HillClimbRacing_testmap", "spritesheet");
+        const base = this.Level2.createLayer("Map", spritesheet);
+        let objectLayer = this.Level2.getObjectLayer("Collisions");
         // Start Methode
         for (let object of objectLayer.objects) {
             this.addPolygon(object);
@@ -170,10 +195,10 @@ export default class Runninggame extends Phaser.Scene {
             stroke: "#000000",
             strokeThickness: 10,
         }).setScrollFactor(0).setOrigin(0.5);
-        let collectables = this.map.getObjectLayer("Collectables");
+        let collectables = this.Level2.getObjectLayer("Collectables");
         let coins = collectables.objects.find(obj => obj.type == "coins");
         let fuel = collectables.objects.find(obj => obj.type == "fuel");
-        var collectableslayer = this.map.createFromObjects("Collectables", [{
+        var collectableslayer = this.Level2.createFromObjects("Collectables", [{
                 gid: 2,
                 key: "coin"
             },
@@ -214,6 +239,13 @@ export default class Runninggame extends Phaser.Scene {
         }
     }
     addPolygon(polygon) {
+        if (Array.isArray(polygon.properties)) {
+            let propertiesNew = {};
+            for (let p of polygon.properties) {
+                propertiesNew[p.name] = p.value;
+            }
+            polygon.properties = propertiesNew;
+        }
         let polygonVectors = polygon.polygon;
         /**
          * Tiled speichert ein Polygon als Liste von Punkten mit Koordinaten relativ zu einem "Ankerpunkt" mit den Koordinaten (polygon.x, polygon.y).
@@ -267,8 +299,6 @@ export default class Runninggame extends Phaser.Scene {
         let carBody = this.car.matterChassis;
         let character_head = this.car.matterCharacter[0];
         let character_body = this.car.matterCharacter[1];
-        this.particlesX = wheelA.position.x;
-        this.particlesY = wheelA.position.y;
         // this.cameras.main.setBounds(0, 0, this.map.width, this.map.height, false)
         this.cameras.main.centerOn(wheelA.position.x + 300, wheelA.position.y - 100);
         this.cameras.main.zoom = 1;
@@ -278,8 +308,8 @@ export default class Runninggame extends Phaser.Scene {
         // let zoom = 1 - wheelRear.angularVelocity / 1.65
         // if (zoom > currentZoom + currentZoom * 0.0022) zoom = currentZoom + currentZoom * 0.0022
         // else if (zoom < currentZoom - currentZoom * 0.0022) zoom = currentZoom - currentZoom * 0.0022
-        // if (zoom > 1) zoom = 1.3
-        // if (zoom < 0.6) zoom = 1
+        // if (zoom > 1) zoom = 1
+        // if (zoom < 0.6) zoom = 0.6
         // this.cameras.main.setZoom(zoom)
         for (let i = 0; i < this.paralaxbackgrounds.length; ++i) {
             const pbg = this.paralaxbackgrounds[i];
@@ -329,9 +359,6 @@ export default class Runninggame extends Phaser.Scene {
         }
         this.fuelcounter = this.fuelcounter - 0.01;
         this.fuelnumber.setText("" + Math.round(this.fuelcounter) + " %");
-        if (this.distancecounter > this.distancehighscore) {
-            this.distancehighscore = this.distancecounter;
-        }
         if (this.fuelcounter < 0) {
             this.fuelcounter = 0;
         }
@@ -340,4 +367,4 @@ export default class Runninggame extends Phaser.Scene {
         }
     }
 }
-//# sourceMappingURL=Runninggame.js.map
+//# sourceMappingURL=Level2.js.map

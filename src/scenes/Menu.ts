@@ -61,6 +61,18 @@ export default class Menu extends Phaser.Scene {
     x_button;
     x_image;
 
+    colorrect;
+    colorrect2;
+    red;
+    blue;
+    grey;
+    green;
+    yellow;
+    colortext;
+    colortext2;
+    color_cost;
+
+    color_red;
 
     //jeweils zuständig für die Anzeige des Tuning Fortschritts
     wheelleveltext;
@@ -114,7 +126,7 @@ export default class Menu extends Phaser.Scene {
 
     init(params: Params){
         this.params = params;
-        
+        this.params.fuel = 100
     }
 
     create() {
@@ -127,16 +139,16 @@ export default class Menu extends Phaser.Scene {
         this.add.image(screenCenterX , screenCenterY , "menu")
         
         this.coinobj = this.add.image(screenCenterX - 900, screenCenterY -475,"coin").setOrigin(0.5).setScale(0.15);
-        this.cointext = this.add.text(this.coinobj.x + 75, this.coinobj.y, this.params.coins.toString(), {
+        // this.cointext = this.add.text(this.coinobj.x + 75, this.coinobj.y, this.params.coins.toString(), {
                     
-            fontFamily: "hillclimbracing",
-            fontSize: "60px",
-            color: "#FFFFFF",
-            align: "center",
-            stroke: "#000000",
-            strokeThickness: 10
+        //     fontFamily: "hillclimbracing",
+        //     fontSize: "60px",
+        //     color: "#FFFFFF",
+        //     align: "center",
+        //     stroke: "#000000",
+        //     strokeThickness: 10
             
-        }).setOrigin(0.5)
+        // }).setOrigin(0.5)
 
 
         this.middlerect = this.add.rectangle(screenCenterX, screenCenterY- 200, 600, 350, 0xadd8e6).setStrokeStyle(7, 0x000000)
@@ -555,6 +567,62 @@ export default class Menu extends Phaser.Scene {
             this.middleobj.alpha = 0;
             this.middlerect.setVisible(false)
             this.middletext.setVisible(false)
+            
+            
+            this.colortext = this.add.text(screenCenterX - 600, screenCenterY -150, "Color", {
+            
+                fontFamily: "hillclimbracing",
+                fontSize: "40px",
+                color: "#FFFFFF",
+                align: "center",
+                stroke: "#000000",
+                strokeThickness: 10
+                
+            }).setOrigin(0.5).setDepth(+4)
+            this.colorrect = this.add.rectangle(screenCenterX - 600, screenCenterY - 150, 275, 150, 0x565656).setStrokeStyle(5, 0x000000, 1).setInteractive().on("pointerdown", () =>{
+                this.colorrect2 = this.add.rectangle(screenCenterX, screenCenterY, 800, 600, 0x565656).setStrokeStyle(5, 0x000000, 1).setDepth(+1)
+                this.colortext2 = this.add.text(screenCenterX + 100 , screenCenterY -150, "Choose Your Color", {
+            
+                    fontFamily: "hillclimbracing",
+                    fontSize: "40px",
+                    color: "#FFFFFF",
+                    align: "center",
+                    stroke: "#000000",
+                    strokeThickness: 10
+                    
+                }).setOrigin(0.5).setDepth(+4)
+                this.red = this.add.rectangle(screenCenterX - 250, screenCenterY - 150 , 250, 150, 0xff0000).setStrokeStyle(5, 0x000000, 1).setDepth(+2).setInteractive().on("pointerdown", () =>{
+                  
+                        this.params.carcolor = 1
+
+                })
+                this.blue = this.add.rectangle(screenCenterX - 250, screenCenterY + 200, 250, 150, 0x00bfff).setStrokeStyle(5, 0x000000, 1).setDepth(+2).setInteractive().on("pointerdown", () =>{
+                   
+                        this.params.carcolor = 2
+                        console.log(this.params.carcolor)
+                    
+
+                })
+                this.green = this.add.rectangle(screenCenterX + 25, screenCenterY + 25 , 250, 150, 0x228b22).setStrokeStyle(5, 0x000000, 1).setDepth(+2).setInteractive().on("pointerdown", () =>{
+                   
+                        this.params.carcolor = 3
+                    
+
+                })
+                this.yellow = this.add.rectangle(screenCenterX +25, screenCenterY + 200, 250, 150, 0xeec900).setStrokeStyle(5, 0x000000, 1).setDepth(+2).setInteractive().on("pointerdown", () =>{
+                   
+                        this.params.carcolor = 4
+                    
+
+                })
+                this.grey = this.add.rectangle(screenCenterX - 250, screenCenterY +25 , 250, 150, 0x999999).setStrokeStyle(5, 0x000000, 1).setDepth(+2).setInteractive().on("pointerdown", () =>{
+                 
+                        this.params.carcolor = 5
+                    
+                })
+                
+            })
+
 
             this.wheelrect.setVisible(false);
             this.wheelrect2.setVisible(false);
@@ -604,7 +672,7 @@ export default class Menu extends Phaser.Scene {
         
         this.startrect = this.add.rectangle(screenCenterX+560, screenCenterY + 200, 275, 150, 0x49B675).setStrokeStyle(5, 0x000000, 1).setInteractive().on("pointerdown", () => {
             
-            this.scene.start("Runninggame")
+            this.scene.start("Level2")
             
             
             
@@ -655,6 +723,7 @@ export default class Menu extends Phaser.Scene {
 
     update() {
 
+       
     }
 
 }

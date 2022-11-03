@@ -3,7 +3,10 @@ export default class Startscreen extends Phaser.Scene {
         super("startsceen");
         this.params = {
             coins: 0,
-            fuel: 0
+            fuel: 0,
+            highscore: 0,
+            score: 0,
+            carcolor: 1
         };
     }
     preload() {
@@ -51,7 +54,10 @@ export default class Startscreen extends Phaser.Scene {
         this.Enterevent.on("down", function () {
             let params = {
                 coins: 0,
-                fuel: 0
+                fuel: 0,
+                highscore: 0,
+                score: 0,
+                carcolor: this.params.carcolor
             };
             this.scene.start("Menu", params);
         }, this);

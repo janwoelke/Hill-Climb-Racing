@@ -14,17 +14,26 @@ export class Car {
     // matterCharacter: Matter.Body[] = []; 
 
     matterCar: Matter.Composite;
+
+    params: Params;
+
+    car_color;
     
-   
+  
+    
 
     constructor(private scene: Phaser.Scene, private engine: Matter.Engine, private world: Matter.World) {
+
+       
         let factor = 0.2;
         this.character = scene.physics.add.sprite(300,300, "body");
         let body_scale = 0.5;
         this.character.setScale(body_scale);
         this.wheels.push(scene.add.sprite(290, 310, "wheel"));
         this.wheels.push(scene.add.sprite(310, 310, "wheel"));
+        
         this.chassis = scene.physics.add.sprite(300, 300, "chassis");
+       
         this.chassis.setScale(factor);
         this.wheels.forEach(wheel => wheel.setScale(factor));
         
@@ -68,7 +77,7 @@ export class Car {
                 density: 0.0002
             });
 
-        let friction = 0.8;
+        let friction = 0.5;
 
         let wheelA = Matter.Bodies.circle(xx + wheelAOffset, yy + wheelYOffset, wheelSize, {
             collisionFilter: {
@@ -97,12 +106,12 @@ export class Car {
            
         });
         
-        // let carEngine = Matter.Bodies.rectangle(xx + 40, yy, 20, 20, {
-        //     collisionFilter: {
-        //         group: group
-        //     },
+        let carEngine = Matter.Bodies.rectangle(xx + 40, yy, 20, 20, {
+            collisionFilter: {
+                group: group
+            },
            
-        // });
+        });
         // Matter.Body.setMass(this.matterEngine, 10);
         
         
@@ -173,7 +182,7 @@ export class Car {
             bodyB: body,
             bodyA: character_body,
             pointB: { x: characterOffsetX - characterOffset, y: characterOffsetY },
-            stiffness: 0.1,
+            stiffness: 0,
             length: 5
 
         })
@@ -183,7 +192,7 @@ export class Car {
             bodyA: character_body,
             pointB: { x: characterOffsetX + characterOffset, y: characterOffsetY },
             
-            stiffness: 0.1,
+            stiffness: 0,
             length: 5
 
         })
@@ -219,9 +228,15 @@ export class Car {
         Matter.Composite.addConstraint(this.matterCar, axelB2); 
         //@ts-ignore
         Matter.Composite.addBody(this.matterCar, character_body);
-        // //@ts-ignore
-        // Matter.Composite.addBody(this.matterCar, carEngine);
+        //@ts-ignore
+        Matter.Composite.addBody(this.matterCar, carEngine);
 
+    }
+
+    init(params: Params){
+        this.params = params;
+       
+        this.car_color = this.params.carcolor
     }
 
     adjustPhaserObjectsToMatter(){
@@ -244,16 +259,11 @@ export class Car {
             let matterCharacter = this.matterCharacter;
 
             let pos_character = matterCharacter.position;
-            phaserCharacter.setPosition(pos_character.x, pos_character.y);
+            phaserCharacter.setPosition(pos_character.x - 20, pos_character.y + 10);
             let characterAngle = this.matterCharacter.angle;
             this.character.setAngle(characterAngle/Math.PI*180);
-        // for(let j = 0; j < this.character.length; j++){
-        //     let phaserCharacter = this.character[j];
-        //     let matterCharacter = this.matterCharacter[j];
 
-        //     let pos_character = matterCharacter.position;
-        //     phaserCharacter.setPosition(pos_character.x, pos_character.y);
-        // }
+        
     }
 
     update() {

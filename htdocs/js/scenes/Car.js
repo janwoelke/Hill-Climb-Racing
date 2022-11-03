@@ -42,7 +42,7 @@ export class Car {
                 },
                 density: 0.0002
             });
-        let friction = 0.8;
+        let friction = 0.5;
         let wheelA = Matter.Bodies.circle(xx + wheelAOffset, yy + wheelYOffset, wheelSize, {
             collisionFilter: {
                 group: group
@@ -67,11 +67,11 @@ export class Car {
                 group: group
             },
         });
-        // let carEngine = Matter.Bodies.rectangle(xx + 40, yy, 20, 20, {
-        //     collisionFilter: {
-        //         group: group
-        //     },
-        // });
+        let carEngine = Matter.Bodies.rectangle(xx + 40, yy, 20, 20, {
+            collisionFilter: {
+                group: group
+            },
+        });
         // Matter.Body.setMass(this.matterEngine, 10);
         //Masse des Autos normal: 1
         this.matterWheels.push(wheelA, wheelB);
@@ -128,14 +128,14 @@ export class Car {
             bodyB: body,
             bodyA: character_body,
             pointB: { x: characterOffsetX - characterOffset, y: characterOffsetY },
-            stiffness: 0.1,
+            stiffness: 0,
             length: 5
         });
         let seat2 = Matter.Constraint.create({
             bodyB: body,
             bodyA: character_body,
             pointB: { x: characterOffsetX + characterOffset, y: characterOffsetY },
-            stiffness: 0.1,
+            stiffness: 0,
             length: 5
         });
         // let seat3 = Matter.Constraint.create({
@@ -167,8 +167,12 @@ export class Car {
         Matter.Composite.addConstraint(this.matterCar, axelB2);
         //@ts-ignore
         Matter.Composite.addBody(this.matterCar, character_body);
-        // //@ts-ignore
-        // Matter.Composite.addBody(this.matterCar, carEngine);
+        //@ts-ignore
+        Matter.Composite.addBody(this.matterCar, carEngine);
+    }
+    init(params) {
+        this.params = params;
+        this.car_color = this.params.carcolor;
     }
     adjustPhaserObjectsToMatter() {
         let chassisPosition = this.matterChassis.position;
@@ -185,15 +189,9 @@ export class Car {
         let phaserCharacter = this.character;
         let matterCharacter = this.matterCharacter;
         let pos_character = matterCharacter.position;
-        phaserCharacter.setPosition(pos_character.x, pos_character.y);
+        phaserCharacter.setPosition(pos_character.x - 20, pos_character.y + 10);
         let characterAngle = this.matterCharacter.angle;
         this.character.setAngle(characterAngle / Math.PI * 180);
-        // for(let j = 0; j < this.character.length; j++){
-        //     let phaserCharacter = this.character[j];
-        //     let matterCharacter = this.matterCharacter[j];
-        //     let pos_character = matterCharacter.position;
-        //     phaserCharacter.setPosition(pos_character.x, pos_character.y);
-        // }
     }
     update() {
     }
