@@ -17,19 +17,16 @@ export class Car {
 
     params: Params;
 
-    car_color = "chassis_grey"
+    car_color;
+    
     
   
-    init(params: Params){
-        this.params.carcolor = this.params.carcolor
-       
-    }
+    
 
-    constructor(private scene: Phaser.Scene, private engine: Matter.Engine, private world: Matter.World) {
+    constructor(private scene: Phaser.Scene, private engine: Matter.Engine, private world: Matter.World, params: Params) {
 
         
        
-        // this.car_color = this.params.carcolor; 
         
         let factor = 0.2;
         this.character = scene.physics.add.sprite(300,300, "body");
@@ -38,7 +35,8 @@ export class Car {
         this.wheels.push(scene.add.sprite(290, 310, "wheel"));
         this.wheels.push(scene.add.sprite(310, 310, "wheel"));
         
-        this.chassis = scene.physics.add.sprite(300, 300, this.car_color);
+        console.log(params.carcolor)
+        this.chassis = scene.physics.add.sprite(300, 300, "chassis_golf_mk2");
        
         this.chassis.setScale(factor);
         this.wheels.forEach(wheel => wheel.setScale(factor));
@@ -52,8 +50,11 @@ export class Car {
         let height = 425*factor;
         
         //position of the Wheels
-        let wheelAOffset = -360*factor;
-        let wheelBOffset = 317*factor;
+        // let wheelAOffset = -360*factor;
+        // let wheelBOffset = 317*factor;
+        // let wheelYOffset = 135*factor;
+        let wheelAOffset = -430*factor;
+        let wheelBOffset = 400*factor;
         let wheelYOffset = 135*factor;
        
         //position of the Character

@@ -5,6 +5,10 @@ type Params = {
     highscore: number
     score: number
     carcolor: string
+    wheeltuning : number
+    enginetuning : number
+    accelerationtuning : number
+    fueltuning : number
     
 }
 

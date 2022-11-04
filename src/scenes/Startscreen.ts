@@ -21,7 +21,11 @@ export default class Startscreen extends Phaser.Scene {
         fuel: 0,
         highscore: 0,
         score: 0,
-        carcolor: "chassis"
+        carcolor: "chassis",
+        wheeltuning: 0,
+        accelerationtuning: 0,
+        enginetuning: 0,
+        fueltuning: 0,
         
         
 
@@ -134,7 +138,12 @@ export default class Startscreen extends Phaser.Scene {
                     fuel: 0,
                     highscore: 0,
                     score: 0,
-                    carcolor: this.params.carcolor
+                    carcolor: this.params.carcolor,
+                    wheeltuning: 0,
+                    accelerationtuning: 0,
+                    enginetuning: 0,
+                    fueltuning: 0
+                    
                     
                     
                 }

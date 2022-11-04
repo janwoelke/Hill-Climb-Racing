@@ -140,7 +140,7 @@ export default class Gameover extends Phaser.Scene{
 
         this.menurect = this.add.rectangle(screenCenterX+560, screenCenterY + 200, 275, 150, 0x49B675).setStrokeStyle(5, 0x000000, 1).setInteractive().on("pointerdown", () => {
             
-            this.scene.start("Menu")
+            this.scene.start("Menu", this.params)
             
             
             

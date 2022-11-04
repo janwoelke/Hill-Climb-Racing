@@ -171,7 +171,11 @@ export default class Level3 extends Phaser.Scene {
                     fuel: this.fuelcounter,
                     highscore: this.distancehighscore,
                     score: this.distancecounter,
-                    carcolor: this.params.carcolor
+                    carcolor: this.params.carcolor,
+                    wheeltuning: this.params.wheeltuning,
+                    accelerationtuning: this.params.accelerationtuning,
+                    enginetuning: this.params.enginetuning,
+                    fueltuning: this.params.fueltuning
                     
                 }
                 this.scene.start("Menu", params);
@@ -221,6 +225,10 @@ export default class Level3 extends Phaser.Scene {
             })
 
 
+        })
+        this.paralaxbackgrounds.push( {
+            ratioX: 0.1,
+            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level3_sky").setOrigin(0,0).setScrollFactor(0).setDepth(-4).setAlpha(0.7)
         })
         this.paralaxbackgrounds.push( {
             ratioX: 0.1,
@@ -308,7 +316,7 @@ export default class Level3 extends Phaser.Scene {
 
         // Methode ende
         
-        this.car = new Car(this, this.engine, this.world);
+        this.car = new Car(this, this.engine, this.world, this.params);
         
         Matter.Composite.add(this.world, this.car.matterCar);
         
@@ -411,7 +419,12 @@ export default class Level3 extends Phaser.Scene {
                 fuel: this.fuelcounter,
                 highscore: this.distancehighscore,
                 score: this.distancecounter,
-                carcolor: this.params.carcolor
+                carcolor: this.params.carcolor,
+                wheeltuning: this.params.wheeltuning,
+                accelerationtuning: this.params.accelerationtuning,
+                enginetuning: this.params.enginetuning,
+                fueltuning: this.params.fueltuning
+                
                 
             }
             this.scene.start("Win", params)
@@ -597,7 +610,11 @@ export default class Level3 extends Phaser.Scene {
                 fuel: this.fuelcounter,
                 highscore: this.distancehighscore,
                 score: this.distancecounter,
-                carcolor: this.params.carcolor
+                carcolor: this.params.carcolor,
+                wheeltuning: this.params.wheeltuning,
+                accelerationtuning: this.params.accelerationtuning,
+                enginetuning: this.params.enginetuning,
+                fueltuning: this.params.fueltuning
                 
             }
             this.scene.start("Gameover", params);
@@ -611,7 +628,11 @@ export default class Level3 extends Phaser.Scene {
                 fuel: this.fuelcounter,
                 highscore: this.distancehighscore,
                 score: this.distancecounter,
-                carcolor: this.params.carcolor
+                carcolor: this.params.carcolor,
+                wheeltuning: this.params.wheeltuning,
+                accelerationtuning: this.params.accelerationtuning,
+                enginetuning: this.params.enginetuning,
+                fueltuning: this.params.fueltuning
                 
             }
             this.scene.start("Gameover", params)

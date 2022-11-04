@@ -169,7 +169,11 @@ export default class Level2 extends Phaser.Scene {
                     fuel: this.fuelcounter,
                     highscore: this.distancehighscore,
                     score: this.distancecounter,
-                    carcolor: this.params.carcolor
+                    carcolor: this.params.carcolor,
+                    wheeltuning: this.params.wheeltuning,
+                    accelerationtuning: this.params.accelerationtuning,
+                    enginetuning: this.params.enginetuning,
+                    fueltuning: this.params.fueltuning
                     
                 }
                 this.scene.start("Menu", params);
@@ -314,7 +318,7 @@ export default class Level2 extends Phaser.Scene {
 
         // Methode ende
         
-        this.car = new Car(this, this.engine, this.world);
+        this.car = new Car(this, this.engine, this.world, this.params);
         
         Matter.Composite.add(this.world, this.car.matterCar);
         

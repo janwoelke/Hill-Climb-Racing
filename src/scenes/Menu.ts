@@ -920,6 +920,7 @@ export default class Menu extends Phaser.Scene {
             
             
             
+            
         })
         this.starttext = this.add.text(screenCenterX+560, screenCenterY+200, "Start", {
             
