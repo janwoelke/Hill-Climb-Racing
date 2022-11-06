@@ -17,17 +17,46 @@ export default class Startscreen extends Phaser.Scene {
     super("startsceen") 
     
     this.params = {
+       
         coins: 0,
         fuel: 0,
         highscore: 0,
+        highscore2: 0,
+        highscore3: 0,
         score: 0,
-        carcolor: "chassis",
-        wheeltuning: 0,
-        accelerationtuning: 0,
-        enginetuning: 0,
-        fueltuning: 0,
+        carcolor: 1,
+        carcolor2: 1,
+        map: "level1",
+        vehicle: "MUSCLE CAR",
+        wheellevel: 1,
+        wheellevel2: 0,
+        wheellevel3: 0,
+        friction: 0.2,
+        fuellevel: 1,
+        fuellevel2: 0,
+        fuellevel3: 0,
+        fueltank: 1,
+        accelerationoffset: 135,
+        enginelevel: 1,
+        enginelevel2: 0,
+        enginelevel3: 0,
+        enginepower: 0.4,
+        accelerationlevel: 1,
+        accelerationlevel2: 0,
+        accelerationlevel3: 0,
+        character: "STEVE",
+        rim: "STANDARD",
+        bluestatus: "locked",
+        greystatus: "locked",
+        greenstatus: "locked",
+        yellowstatus: "locked",
+        sportstatus: "locked",
+        bbsstatus: "locked",
+        hobbesstatus: "locked",
+        calvinstatus: "locked",
+
         
-        
+                    
 
     }
 
@@ -134,17 +163,43 @@ export default class Startscreen extends Phaser.Scene {
         this.Enterevent.on("down", function() {
 
                 let params: Params = {
-                    coins: 0,
+                    coins: 1000,
                     fuel: 0,
                     highscore: 0,
+                    highscore2: 0,
+                    highscore3: 0,
                     score: 0,
-                    carcolor: this.params.carcolor,
-                    wheeltuning: 0,
-                    accelerationtuning: 0,
-                    enginetuning: 0,
-                    fueltuning: 0
-                    
-                    
+                    carcolor: 1,
+                    carcolor2: 1,
+                    map: "level1",
+                    vehicle: "MUSCLE CAR",
+                    wheellevel: 1,
+                    wheellevel2: 0,
+                    wheellevel3: 0,
+                    friction: 0.2,
+                    fuellevel: 1,
+                    fuellevel2: 0,
+                    fuellevel3: 0,
+                    fueltank: 1,
+                    accelerationoffset: 135,
+                    enginelevel: 1,
+                    enginelevel2: 0,
+                    enginelevel3: 0,
+                    enginepower: 0.4,
+                    accelerationlevel: 1,
+                    accelerationlevel2: 0,
+                    accelerationlevel3: 0,
+                    character: "STEVE",
+                    rim: "STANDARD",
+                    bluestatus: "locked",
+                    greystatus: "locked",
+                    greenstatus: "locked",
+                    yellowstatus: "locked",
+                    sportstatus: "locked",
+                    bbsstatus: "locked",
+                    hobbesstatus: "locked",
+                    calvinstatus: "locked",
+
                     
                 }
                 this.backgroundmusic.stop()

@@ -94,7 +94,7 @@ export default class Gameover extends Phaser.Scene{
 
        
 
-        this.highscoretext = this.add.text(screenCenterX , screenCenterY - 200, "HIGHSCORE:", {
+        this.highscoretext = this.add.text(screenCenterX , screenCenterY - 200, "HIGHSCORE: " + this.params.highscore, {
                     
             fontFamily: "hillclimbracing",
             fontSize: "60px",
@@ -115,8 +115,9 @@ export default class Gameover extends Phaser.Scene{
         //     strokeThickness: 10
             
         // }).setOrigin(0.5)
+       
 
-        this.scoretext = this.add.text(screenCenterX , screenCenterY - 100, "SCORE:", {
+        this.scoretext = this.add.text(screenCenterX , screenCenterY - 100, "SCORE:                                 " + Math.round(this.coinscounter / 10) + " m", {
                     
             fontFamily: "hillclimbracing",
             fontSize: "60px",
@@ -126,6 +127,7 @@ export default class Gameover extends Phaser.Scene{
             strokeThickness: 10
             
         }).setOrigin(0.5)
+
 
         // this.scoretext2 = this.add.text(screenCenterX + 500, screenCenterY - 100, this.params.score.toString(), {
                     
@@ -139,8 +141,47 @@ export default class Gameover extends Phaser.Scene{
         // }).setOrigin(0.5)
 
         this.menurect = this.add.rectangle(screenCenterX+560, screenCenterY + 200, 275, 150, 0x49B675).setStrokeStyle(5, 0x000000, 1).setInteractive().on("pointerdown", () => {
-            
-            this.scene.start("Menu", this.params)
+            let params: Params = {
+                coins: this.coinscounter,
+                fuel: this.params.fuel,
+                highscore: this.params.highscore,
+                highscore2: this.params.highscore2,
+                highscore3: this.params.highscore3,
+                score: this.params.score,
+                carcolor: this.params.carcolor,
+                carcolor2: this.params.carcolor2,
+                map: this.params.map,
+                vehicle: this.params.vehicle,
+                fuellevel: this.params.fuellevel,
+                enginelevel: this.params.enginelevel,
+                accelerationlevel: this.params.accelerationlevel,
+                wheellevel: this.params.wheellevel,
+                fuellevel2: this.params.fuellevel2,
+                enginelevel2: this.params.enginelevel2,
+                accelerationlevel2: this.params.accelerationlevel2,
+                wheellevel2: this.params.wheellevel2,
+                character: this.params.character,
+                rim: this.params.rim,
+                bluestatus: this.params.bluestatus,
+                greystatus: this.params.greystatus,
+                greenstatus: this.params.greenstatus,
+                yellowstatus: this.params.yellowstatus,
+                sportstatus: this.params.sportstatus,
+                bbsstatus: this.params.bbsstatus,
+                hobbesstatus: this.params.hobbesstatus,
+                calvinstatus: this.params.calvinstatus,
+                wheellevel3: this.params.wheellevel3,
+                fuellevel3: this.params.fuellevel3,
+                accelerationlevel3: this.params.accelerationlevel3,
+                enginelevel3: this.params.enginelevel3,
+                friction: this.params.friction,
+                accelerationoffset: this.params.accelerationoffset,
+                enginepower : this.params.enginepower,
+                fueltank: this.params.fueltank
+                
+            }
+
+            this.scene.start("Menu", params)
             
             
             

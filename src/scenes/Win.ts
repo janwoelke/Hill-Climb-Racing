@@ -37,6 +37,7 @@ export default class Win extends Phaser.Scene{
         this.load.image("chassis_green", "/htdocs/assets/images/Car_green.png")
         this.load.image("chassis_grey", "/htdocs/assets/images/Car_grey.png")
         this.load.image("wheel", "/htdocs/assets/images/Wheel.png")
+        this.load.image("trophy", "/htdocs/assets/images/trophy.png")
 
     }
 
@@ -93,9 +94,27 @@ export default class Win extends Phaser.Scene{
         this.add.image(screenCenterX - 470, screenCenterY - 130, "wheel").setScale(this.factor)
         this.add.image(screenCenterX - 600, screenCenterY - 200, "chassis").setScale(this.factor)
 
-
-       
-
+        
+        
+        
+        let particles = this.add.particles("coin").setScale(0.1);
+        
+        let emitter = particles.createEmitter({
+            
+            x: screenCenterX*10,
+            y: (screenCenterY + 100)*10,
+            lifespan: 2000,
+            speed: { min: 800, max: 1000 },
+            angle: {min: 0, max: 360},
+            gravityY: 1000,
+            scale: { start: 1, end: 0.3 },
+            
+            quantity: 0.1,
+            blendMode: 'DARKEN'
+        });
+        this.add.image(screenCenterX, screenCenterY + 100, "trophy").setScale(this.factor).setScale(0.3)
+        
+        
         this.highscoretext = this.add.text(screenCenterX , screenCenterY - 200, "HIGHSCORE:", {
                     
             fontFamily: "hillclimbracing",
@@ -142,7 +161,8 @@ export default class Win extends Phaser.Scene{
 
         this.menurect = this.add.rectangle(screenCenterX+560, screenCenterY + 200, 275, 150, 0x49B675).setStrokeStyle(5, 0x000000, 1).setInteractive().on("pointerdown", () => {
             
-            this.scene.start("Menu")
+           
+            this.scene.start("Menu", this.params)
             
             
             

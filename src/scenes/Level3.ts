@@ -31,7 +31,7 @@ export default class Level3 extends Phaser.Scene {
 
     //Coins
     coinsnumber: Phaser.GameObjects.Text;
-    coinscounter = 0;
+    coinscounter;
 
     //Distance
     distance: Phaser.GameObjects.Text;
@@ -62,6 +62,8 @@ export default class Level3 extends Phaser.Scene {
     settingmenutext;
     settingresumetext;
 
+    fueltank: number;
+    enginepower: number;
 
 
     //Fahren des Autos MAX_SPEED normal: 0.75
@@ -69,6 +71,11 @@ export default class Level3 extends Phaser.Scene {
     readonly MAX_SPEED_BACKWARDS = this.MAX_SPEED * 0.75
     readonly ACCELERATION = this.MAX_SPEED / 130
     readonly ACCELERATION_BACKWARDS = this.ACCELERATION * 0.75
+
+    max_speed = 0.4
+    max_speed_backwards = this.max_speed * 0.75
+    acceleration = this.max_speed / 130
+    acceleration_backwards = this.acceleration * 0.75
    
     gas = {
         right: false,
@@ -129,7 +136,14 @@ export default class Level3 extends Phaser.Scene {
         this.load.image("chassis_yellow", "/htdocs/assets/images/Car_yellow.png")
         this.load.image("chassis_green", "/htdocs/assets/images/Car_green.png")
         this.load.image("chassis_grey", "/htdocs/assets/images/Car_grey.png")
-        this.load.image("chassis_golf_mk2", "/htdocs/assets/images/Golf_MK2.png")
+        this.load.image("golf_red", "/htdocs/assets/images/golf_red.png")
+        this.load.image("golf_grey", "/htdocs/assets/images/golf_grey.png")
+        this.load.image("golf_green", "/htdocs/assets/images/golf_green.png")
+        this.load.image("golf_yellow", "/htdocs/assets/images/golf_yellow.png")
+        this.load.image("golf_blue", "/htdocs/assets/images/golf_blue.png")
+        this.load.image("bbs", "/htdocs/assets/images/Wheel_BBS.png")
+        this.load.image("standard", "/htdocs/assets/images/Wheel.png")    
+        this.load.image("sport", "/htdocs/assets/images/Wheel_Sport.png") 
     }
 
 
@@ -139,16 +153,60 @@ export default class Level3 extends Phaser.Scene {
 
     create() {
         
+        this.coinscounter = this.params.coins;
+        this.fueltank = this.params.fueltank;
+        this.enginepower = this.params.enginepower;
+        console.log(this.params.fueltank)
+        
+
+        if(this.params.fuellevel == 1 && this.params.fuellevel2 == 0 && this.params.fuellevel3 == 0){
+            this.fueltank = 1
+            this.params.fueltank = this.fueltank
+            
+        }else if(this.params.fuellevel2 == 1 && this.params.fuellevel == 0 && this.params.fuellevel3 == 0){
+            this.fueltank = 1.5
+            this.params.fueltank = this.fueltank
+
+        }else if(this.params.fuellevel3 == 1 && this.params.fuellevel2 == 0 && this.params.fuellevel == 0){
+            this.fueltank = 2
+            this.params.fueltank = this.fueltank
+         
+        }
+
+        if(this.params.enginelevel == 1 && this.params.enginelevel2 == 0 && this.params.enginelevel3 == 0){
+           this.max_speed = 0.4
+            this.params.enginepower = this.max_speed
+            
+        }else if(this.params.enginelevel2 == 1 && this.params.enginelevel == 0 && this.params.enginelevel3 == 0){
+            this.max_speed = 0.5
+            this.params.enginepower = this.max_speed
+
+        }else if(this.params.enginelevel3 == 1 && this.params.enginelevel2 == 0 && this.params.enginelevel == 0){
+            this.max_speed = 0.6
+            this.params.enginepower = this.max_speed
+         
+        }
+
+        if(this.params.accelerationlevel == 1){
+            this.antrieb = "RWD"
+        }else if(this.params.accelerationlevel2 == 1){
+            this.antrieb = "AWD"
+        }else if(this.params.accelerationlevel3 == 1){
+            this.antrieb = "AWD"
+        }
+
         const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
         const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
         
         // this.cameras.main.startFollow(this.car,true, 0.5, 0.5, 0.5, 0.5)
         // this.cameras.main.setRoundPixels(true);
         
-        
+        this.add.image(0, 0, "level3_sky").setOrigin(0,0).setScale(2.5).setDepth(-3).setScrollFactor(0)
         this.add.image(15, 15, "coin").setOrigin(0,0).setScale(0.15).setScrollFactor(0).setDepth(3)
         this.add.image(1820 ,15, "settings").setOrigin(0,0).setScale(0.155).setScrollFactor(0).setDepth(3)
+        this.add.image(screenCenterX + 600, screenCenterY - 525, "fuel").setOrigin(0,0).setScale(0.15).setScrollFactor(0).setDepth(3)
 
+        this.params.score = this.distancecounter;
         this.fuelcounter = 100;
 
         //Parallaktischer Hintergrund
@@ -165,19 +223,46 @@ export default class Level3 extends Phaser.Scene {
             this.settingresume = this.add.rectangle(screenCenterX, screenCenterY -50, 550, 100, 0x565656, 1).setScrollFactor(0).setStrokeStyle(5, 0x000000, 1)
             
             this.settingmenu = this.add.rectangle(screenCenterX, screenCenterY +100, 550, 100, 0x565656, 1).setScrollFactor(0).setStrokeStyle(5, 0x000000, 1).setInteractive().on("pointerdown", () =>{
-                
                 let params: Params = {
-                    coins: this.coinscounter,
-                    fuel: this.fuelcounter,
-                    highscore: this.distancehighscore,
-                    score: this.distancecounter,
-                    carcolor: this.params.carcolor,
-                    wheeltuning: this.params.wheeltuning,
-                    accelerationtuning: this.params.accelerationtuning,
-                    enginetuning: this.params.enginetuning,
-                    fueltuning: this.params.fueltuning
                     
+                    coins: this.coinscounter,
+                fuel: this.params.fuel,
+                highscore: this.params.highscore,
+                highscore2: this.params.highscore2,
+                highscore3: this.params.highscore3,
+                score: this.params.score,
+                carcolor: this.params.carcolor,
+                carcolor2: this.params.carcolor2,
+                map: this.params.map,
+                vehicle: this.params.vehicle,
+                fuellevel: this.params.fuellevel,
+                enginelevel: this.params.enginelevel,
+                accelerationlevel: this.params.accelerationlevel,
+                wheellevel: this.params.wheellevel,
+                fuellevel2: this.params.fuellevel2,
+                enginelevel2: this.params.enginelevel2,
+                accelerationlevel2: this.params.accelerationlevel2,
+                wheellevel2: this.params.wheellevel2,
+                character: this.params.character,
+                rim: this.params.rim,
+                bluestatus: this.params.bluestatus,
+                greystatus: this.params.greystatus,
+                greenstatus: this.params.greenstatus,
+                yellowstatus: this.params.yellowstatus,
+                sportstatus: this.params.sportstatus,
+                bbsstatus: this.params.bbsstatus,
+                hobbesstatus: this.params.hobbesstatus,
+                calvinstatus: this.params.calvinstatus,
+                wheellevel3: this.params.wheellevel3,
+                fuellevel3: this.params.fuellevel3,
+                accelerationlevel3: this.params.accelerationlevel3,
+                enginelevel3: this.params.enginelevel3,
+                friction: this.params.friction,
+                accelerationoffset: this.params.accelerationoffset,
+                enginepower : this.params.enginepower,
+                fueltank: this.params.fueltank
                 }
+                
                 this.scene.start("Menu", params);
             })
             
@@ -228,10 +313,6 @@ export default class Level3 extends Phaser.Scene {
         })
         this.paralaxbackgrounds.push( {
             ratioX: 0.1,
-            sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level3_sky").setOrigin(0,0).setScrollFactor(0).setDepth(-4).setAlpha(0.7)
-        })
-        this.paralaxbackgrounds.push( {
-            ratioX: 0.1,
             sprite: this.add.tileSprite(0, 0, innerWidth, innerHeight, "level3_rocks1").setOrigin(0,0).setScrollFactor(0).setDepth(-3).setAlpha(0.7)
         })
 
@@ -279,7 +360,7 @@ export default class Level3 extends Phaser.Scene {
         }).setScrollFactor(0).setOrigin(0.5)
 
 
-        this.fuelnumber = this.add.text(1700,50, "" + this.fuelcounter + " %",{
+        this.fuelnumber = this.add.text(1700,55, "" + this.fuelcounter + " %",{
             fontFamily: "hillclimbracing",
             fontSize: "60px",
             color: "#FFFFFF",
@@ -290,7 +371,7 @@ export default class Level3 extends Phaser.Scene {
         }).setScrollFactor(0).setOrigin(0.5).setDepth(+3)
 
         this.engine = Matter.Engine.create({
-            gravity: {y: 0.4}
+            gravity: {y: 0.3}
         })
 
         this.world = this.engine.world;
@@ -321,7 +402,7 @@ export default class Level3 extends Phaser.Scene {
         Matter.Composite.add(this.world, this.car.matterCar);
         
         
-        this.coinsnumber = this.add.text(200, 55, "" + this.coinscounter,{
+        this.coinsnumber = this.add.text(180, 55, "" + this.coinscounter,{
             fontFamily: "hillclimbracing",
             fontSize: "60px",
             color: "#FFFFFF",
@@ -368,7 +449,7 @@ export default class Level3 extends Phaser.Scene {
         })
         this.physics.add.collider(base, collectableslayer, null, null, this)
         
-
+        
 
         this.Fullscreenevent = this.input.keyboard.addKey("F");
         
@@ -390,9 +471,13 @@ export default class Level3 extends Phaser.Scene {
         this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.cursors = this.input.keyboard.createCursorKeys();
+
     }
     
+
+
     
+
     collect(chassis: Phaser.Physics.Arcade.Sprite, collectables: Phaser.Physics.Arcade.Sprite) {
 
         if(collectables.texture.key == "coin") {
@@ -413,20 +498,46 @@ export default class Level3 extends Phaser.Scene {
             this.coinsnumber.setText("" + this.coinscounter)
 
         }else if(collectables.texture.key == "flag"){
-           
             let params: Params = {
+                    
                 coins: this.coinscounter,
-                fuel: this.fuelcounter,
-                highscore: this.distancehighscore,
-                score: this.distancecounter,
+                fuel: this.params.fuel,
+                highscore: this.params.highscore,
+                highscore2: this.params.highscore2,
+                highscore3: this.params.highscore3,
+                score: this.params.score,
                 carcolor: this.params.carcolor,
-                wheeltuning: this.params.wheeltuning,
-                accelerationtuning: this.params.accelerationtuning,
-                enginetuning: this.params.enginetuning,
-                fueltuning: this.params.fueltuning
-                
-                
-            }
+                carcolor2: this.params.carcolor2,
+                map: this.params.map,
+                vehicle: this.params.vehicle,
+                fuellevel: this.params.fuellevel,
+                enginelevel: this.params.enginelevel,
+                accelerationlevel: this.params.accelerationlevel,
+                wheellevel: this.params.wheellevel,
+                fuellevel2: this.params.fuellevel2,
+                enginelevel2: this.params.enginelevel2,
+                accelerationlevel2: this.params.accelerationlevel2,
+                wheellevel2: this.params.wheellevel2,
+                character: this.params.character,
+                rim: this.params.rim,
+                bluestatus: this.params.bluestatus,
+                greystatus: this.params.greystatus,
+                greenstatus: this.params.greenstatus,
+                yellowstatus: this.params.yellowstatus,
+                sportstatus: this.params.sportstatus,
+                bbsstatus: this.params.bbsstatus,
+                hobbesstatus: this.params.hobbesstatus,
+                calvinstatus: this.params.calvinstatus,
+                wheellevel3: this.params.wheellevel3,
+                fuellevel3: this.params.fuellevel3,
+                accelerationlevel3: this.params.accelerationlevel3,
+                enginelevel3: this.params.enginelevel3,
+                friction: this.params.friction,
+                accelerationoffset: this.params.accelerationoffset,
+                enginepower : this.params.enginepower,
+                fueltank: this.params.fueltank
+                }
+            
             this.scene.start("Win", params)
 
         }
@@ -522,7 +633,7 @@ export default class Level3 extends Phaser.Scene {
      
         // this.cameras.main.setBounds(0, 0, this.map.width, this.map.height, false)
         this.cameras.main.centerOn(wheelA.position.x + 300, wheelA.position.y - 100)
-        this.cameras.main.zoom = 1
+        this.cameras.main.zoom = 1.0
         // set the smooth zoom
         // const wheelRear = this.car.matterChassis
         // const currentZoom = this.cameras.main.zoom
@@ -548,41 +659,37 @@ export default class Level3 extends Phaser.Scene {
 
         if (this.keyD.isDown && this.fuelcounter > 0 || this.cursors.right.isDown && this.fuelcounter > 0) {
           let newSpeed = 
-            wheelB.angularSpeed <= 0 ? this.MAX_SPEED / 10 : wheelB.angularSpeed + this.ACCELERATION
-          if (newSpeed > this.MAX_SPEED) newSpeed = this.MAX_SPEED
+            wheelA.angularSpeed <= 0 ? this.max_speed / 10 : wheelA.angularSpeed + this.acceleration
+          if (newSpeed > this.max_speed) newSpeed = this.max_speed
           if (this.antrieb == "AWD"){
           Matter.Body.setAngularVelocity(wheelB, newSpeed)
           Matter.Body.setAngularVelocity(wheelA, newSpeed)
           }else if(this.antrieb == "RWD"){
           Matter.Body.setAngularVelocity(wheelA, newSpeed);  
-          }else if(this.antrieb == "FWD"){
-            Matter.Body.setAngularVelocity(wheelB, newSpeed);
           }
 
           
 
-              this.fuelcounter = this.fuelcounter - 0.02;
+              this.fuelcounter = this.fuelcounter - (0.02)/this.fueltank;
               this.fuelnumber.setText("" + Math.round(this.fuelcounter) + " %");
     
           
                 if (!this.wheelsDown.rear && !this.wheelsDown.front) Matter.Body.setAngularVelocity(carBody, -angularVelocity)
         } else if (this.keyA.isDown && this.fuelcounter > 0 || this.cursors.left.isDown && this.fuelcounter > 0) {
           let newSpeed =
-            wheelB.angularSpeed <= 0 ? this.MAX_SPEED_BACKWARDS / 10 : wheelB.angularSpeed + this.ACCELERATION_BACKWARDS
-          if (newSpeed > this.MAX_SPEED_BACKWARDS) newSpeed = this.MAX_SPEED_BACKWARDS
+            wheelA.angularSpeed <= 0 ? this.max_speed_backwards / 10 : wheelA.angularSpeed + this.acceleration_backwards
+          if (newSpeed > this.max_speed_backwards) newSpeed = this.max_speed_backwards
           if (this.antrieb == "AWD"){
           Matter.Body.setAngularVelocity(wheelB, -newSpeed)
           Matter.Body.setAngularVelocity(wheelA, -newSpeed)
           }else if(this.antrieb == "RWD"){
             Matter.Body.setAngularVelocity(wheelA, -newSpeed);  
-          }else if(this.antrieb == "FWD"){
-              Matter.Body.setAngularVelocity(wheelB, -newSpeed);
           }
 
           
        
 
-              this.fuelcounter = this.fuelcounter - 0.02;
+              this.fuelcounter = this.fuelcounter - (0.02)/this.fueltank;
               this.fuelnumber.setText("" + Math.round(this.fuelcounter) + " %");
 
          
@@ -593,7 +700,7 @@ export default class Level3 extends Phaser.Scene {
 
     
 
-        this.fuelcounter = this.fuelcounter - 0.01;
+        this.fuelcounter = this.fuelcounter - (0.01)/this.fueltank;
         this.fuelnumber.setText("" + Math.round(this.fuelcounter) + " %");
 
         if(this.fuelcounter < 0){
@@ -603,39 +710,49 @@ export default class Level3 extends Phaser.Scene {
         }
 
         if(this.fuelcounter <= 0){
-
-            // this.scene.start("Gameover", this.params);
             let params: Params = {
+                    
                 coins: this.coinscounter,
-                fuel: this.fuelcounter,
-                highscore: this.distancehighscore,
-                score: this.distancecounter,
+                fuel: this.params.fuel,
+                highscore: this.params.highscore,
+                highscore2: this.params.highscore2,
+                highscore3: this.params.highscore3,
+                score: this.params.score,
                 carcolor: this.params.carcolor,
-                wheeltuning: this.params.wheeltuning,
-                accelerationtuning: this.params.accelerationtuning,
-                enginetuning: this.params.enginetuning,
-                fueltuning: this.params.fueltuning
-                
-            }
+                carcolor2: this.params.carcolor2,
+                map: this.params.map,
+                vehicle: this.params.vehicle,
+                fuellevel: this.params.fuellevel,
+                enginelevel: this.params.enginelevel,
+                accelerationlevel: this.params.accelerationlevel,
+                wheellevel: this.params.wheellevel,
+                fuellevel2: this.params.fuellevel2,
+                enginelevel2: this.params.enginelevel2,
+                accelerationlevel2: this.params.accelerationlevel2,
+                wheellevel2: this.params.wheellevel2,
+                character: this.params.character,
+                rim: this.params.rim,
+                bluestatus: this.params.bluestatus,
+                greystatus: this.params.greystatus,
+                greenstatus: this.params.greenstatus,
+                yellowstatus: this.params.yellowstatus,
+                sportstatus: this.params.sportstatus,
+                bbsstatus: this.params.bbsstatus,
+                hobbesstatus: this.params.hobbesstatus,
+                calvinstatus: this.params.calvinstatus,
+                wheellevel3: this.params.wheellevel3,
+                fuellevel3: this.params.fuellevel3,
+                accelerationlevel3: this.params.accelerationlevel3,
+                enginelevel3: this.params.enginelevel3,
+                friction: this.params.friction,
+                accelerationoffset: this.params.accelerationoffset,
+                enginepower : this.params.enginepower,
+                fueltank: this.params.fueltank
+                    
+                }
             this.scene.start("Gameover", params);
 
-        }
-       
-        if(wheelA.position.y > 2000){
 
-            let params: Params = {
-                coins: this.coinscounter,
-                fuel: this.fuelcounter,
-                highscore: this.distancehighscore,
-                score: this.distancecounter,
-                carcolor: this.params.carcolor,
-                wheeltuning: this.params.wheeltuning,
-                accelerationtuning: this.params.accelerationtuning,
-                enginetuning: this.params.enginetuning,
-                fueltuning: this.params.fueltuning
-                
-            }
-            this.scene.start("Gameover", params)
         }
 
 

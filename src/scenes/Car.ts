@@ -1,3 +1,4 @@
+import { param } from "jquery";
 
 export class Car {
 
@@ -13,30 +14,131 @@ export class Car {
     matterEngine: Matter.Body;
     // matterCharacter: Matter.Body[] = []; 
 
-    matterCar: Matter.Composite;
+    colorstring;
+    wheeloffset1;
+    wheeloffset2;
+    characterplay;
+    rimplay;
+    
+    friction;
+    wheelYOffset;
+    
 
+    matterCar: Matter.Composite;
+    
     params: Params;
 
-    car_color;
+    init(params: Params){
+        this.params = params;
+       
+        
+    }
     
-    
-  
     
 
+    
+    
+    
     constructor(private scene: Phaser.Scene, private engine: Matter.Engine, private world: Matter.World, params: Params) {
 
         
-       
+        switch(params.vehicle) {
+            case "MUSCLE CAR": this.colorstring = "chassis"; break;
+            case "GOLF MK II": this.colorstring = "golf_red"; break;
+            
+        }
+        if(params.carcolor == 0 && params.carcolor2 < 2) {
+            params.carcolor2 = 1;
+        } else if(params.carcolor2 == 0 && params.carcolor < 2) {
+            params.carcolor = 1;
+        }
+        switch(params.carcolor) {
+            case 0: break;
+            case 1: this.colorstring = "chassis"; break;
+            case 2: this.colorstring = "chassis_blue"; break;
+            case 3: this.colorstring = "chassis_green"; break;
+            case 4: this.colorstring = "chassis_yellow"; break;
+            case 5: this.colorstring = "chassis_grey"; break;
+        }
+        
+        switch(params.carcolor2) {
+            case 0: break;
+            case 1: this.colorstring = "golf_red"; break;
+            case 2: this.colorstring = "golf_blue"; break;
+            case 3: this.colorstring = "golf_green"; break;
+            case 4: this.colorstring = "golf_yellow"; break;
+            case 5: this.colorstring = "golf_grey"; break;
+        }
+
+
+            if(params.vehicle == "MUSCLE CAR") {
+             this.wheeloffset1 = -340;
+             this.wheeloffset2 = 317;
+            } else if (params.vehicle == "GOLF MK II") {
+             this.wheeloffset1 = -450;
+             this.wheeloffset2 = 400;
+            }
+             
+            switch(params.rim) {
+                case "STANDARD": this.rimplay = "standard"; break;
+                case "SPORT": this.rimplay  = "sport"; break;
+                case "BBS": this.rimplay  = "bbs"; break;
+            }
+
+        
+       switch(params.character) {
+        case "STEVE": this.characterplay = "body"; break;
+        case "HOBBES": this.characterplay = "hobbes"; break;
+        case "CALVIN": this.characterplay = "calvin"; break;
+   
+    }
+    
+    let body_scale = 0.5;
+    switch(params.character) {
+        case "STEVE": body_scale = 0.5; break;
+        case "HOBBES": body_scale = 0.3; break;
+        case "CALVIN": body_scale = 0.3; break;
+   
+    }
+    
+        
+
+        if(params.wheellevel == 1 && params.wheellevel2 == 0 && params.wheellevel3 == 0){
+            this.friction = 0.2
+            console.log(this.friction)
+            params.friction = this.friction
+        }else if(params.wheellevel2 == 1 && params.wheellevel == 0 && params.wheellevel3 == 0){
+            this.friction = 0.6
+            console.log(this.friction)
+            params.friction = this.friction
+        }else if(params.wheellevel3 == 1 && params.wheellevel2 == 0 && params.wheellevel == 0){
+            this.friction = 1
+            console.log(this.friction)
+            params.friction = this.friction
+        }
+
+        if(params.accelerationlevel == 1 && params.accelerationlevel2 == 0 && params.accelerationlevel3 == 0){
+            this.wheelYOffset = 135
+            params.accelerationoffset = this.wheelYOffset
+            
+        }else if(params.accelerationlevel2 == 1 && params.accelerationlevel == 0 && params.accelerationlevel3 == 0){
+            this.wheelYOffset = 145
+            params.accelerationoffset = this.wheelYOffset
+
+        }else if(params.accelerationlevel3 == 1 && params.accelerationlevel2 == 0 && params.accelerationlevel == 0){
+            this.wheelYOffset = 155
+            params.accelerationoffset = this.wheelYOffset
+         
+        }
+        
         
         let factor = 0.2;
-        this.character = scene.physics.add.sprite(300,300, "body");
-        let body_scale = 0.5;
+        this.character = scene.physics.add.sprite(300,300, this.characterplay);
         this.character.setScale(body_scale);
-        this.wheels.push(scene.add.sprite(290, 310, "wheel"));
-        this.wheels.push(scene.add.sprite(310, 310, "wheel"));
+        this.wheels.push(scene.add.sprite(290, 310, this.rimplay));
+        this.wheels.push(scene.add.sprite(310, 310, this.rimplay));
         
-        console.log(params.carcolor)
-        this.chassis = scene.physics.add.sprite(300, 300, "chassis_golf_mk2");
+        this.chassis = scene.physics.add.sprite(300, 300, this.colorstring);
        
         this.chassis.setScale(factor);
         this.wheels.forEach(wheel => wheel.setScale(factor));
@@ -50,12 +152,10 @@ export class Car {
         let height = 425*factor;
         
         //position of the Wheels
-        // let wheelAOffset = -360*factor;
-        // let wheelBOffset = 317*factor;
-        // let wheelYOffset = 135*factor;
-        let wheelAOffset = -430*factor;
-        let wheelBOffset = 400*factor;
-        let wheelYOffset = 135*factor;
+        let wheelAOffset = this.wheeloffset1*factor;
+        let wheelBOffset = this.wheeloffset2*factor;
+        
+       
        
         //position of the Character
         let characterOffset = 20;
@@ -67,7 +167,7 @@ export class Car {
 
         let wheelSize = 280*0.5*factor; // 28.07.2022: Faktor 0.5 eingefügt, da 280px der Durchmesser der Graphik ist, wheelSize aber der Radius des Matter-Kreises
       
-        
+        console.log(params.friction)
 
 
         let body: Matter.Body;
@@ -84,20 +184,20 @@ export class Car {
                 density: 0.0002
             });
 
-        let friction = 0.5;
+        
 
-        let wheelA = Matter.Bodies.circle(xx + wheelAOffset, yy + wheelYOffset, wheelSize, {
+        let wheelA = Matter.Bodies.circle(xx + wheelAOffset, yy + params.accelerationoffset * factor, wheelSize, {
             collisionFilter: {
                 group: group
             },
-            friction: friction, 
+            friction: params.friction, 
             restitution: 0.1       });
 
-        let wheelB = Matter.Bodies.circle(xx + wheelBOffset, yy + wheelYOffset, wheelSize, {
+        let wheelB = Matter.Bodies.circle(xx + wheelBOffset, yy +params.accelerationoffset * factor, wheelSize, {
             collisionFilter: {
                 group: group
             },
-            friction: friction,
+            friction: params.friction,
             restitution: 0.1
         });
         // let character_head  = Matter.Bodies.circle(xx - 20, yy - 100, bodySize, {
@@ -146,7 +246,7 @@ export class Car {
 
         let axelA1 = Matter.Constraint.create({
             bodyB: body,
-            pointB: { x: wheelAOffset - axelOffset, y: wheelYOffset },
+            pointB: { x: wheelAOffset - axelOffset, y: params.accelerationoffset * factor},
             bodyA: wheelA,
             stiffness: constraint_stiffness,
             length: constraint_legth
@@ -154,7 +254,7 @@ export class Car {
 
         let axelA2 = Matter.Constraint.create({
             bodyB: body,
-            pointB: { x: wheelAOffset + axelOffset, y: wheelYOffset },
+            pointB: { x: wheelAOffset + axelOffset, y: params.accelerationoffset* factor },
             bodyA: wheelA,
             stiffness: constraint_stiffness,
             length: constraint_legth
@@ -162,7 +262,7 @@ export class Car {
 
         let axelB1 = Matter.Constraint.create({
             bodyB: body,
-            pointB: { x: wheelBOffset - axelOffset, y: wheelYOffset },
+            pointB: { x: wheelBOffset - axelOffset, y: params.accelerationoffset* factor },
             bodyA: wheelB,
             stiffness: constraint_stiffness,
             length: constraint_legth
@@ -170,7 +270,7 @@ export class Car {
         
         let axelB2 = Matter.Constraint.create({
             bodyB: body,
-            pointB: { x: wheelBOffset + axelOffset, y: wheelYOffset },
+            pointB: { x: wheelBOffset + axelOffset, y: params.accelerationoffset * factor},
             bodyA: wheelB,
             stiffness: constraint_stiffness,
             length: constraint_legth
@@ -263,7 +363,7 @@ export class Car {
 
             let pos_character = matterCharacter.position;
             phaserCharacter.setPosition(pos_character.x - 20, pos_character.y + 10);
-            let characterAngle = this.matterCharacter.angle;
+            let characterAngle = this.matterChassis.angle;
             this.character.setAngle(characterAngle/Math.PI*180);
 
         
