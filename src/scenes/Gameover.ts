@@ -1,22 +1,23 @@
 export default class Gameover extends Phaser.Scene{
 
-    gameovertext;
+    gameovertext: Phaser.GameObjects.Text
    
    
-    highscoretext;
-    highscoretext2;
-    scoretext;
-    scoretext2;
+    highscoretext: Phaser.GameObjects.Text;
+    highscoretext2: Phaser.GameObjects.Text;
+    scoretext: Phaser.GameObjects.Text;
+    scoretext2: Phaser.GameObjects.Text;
     Fullscreenevent;
-    menurect;
-    menutext;
+    menurect: Phaser.GameObjects.Rectangle
+    menutext: Phaser.GameObjects.Text;
+    distancecounter: number
 
-    cointext;
+    cointext: Phaser.GameObjects.Text;
     coinscounter: number;
-    coinobj;
-    coinsnumber;
+    coinobj: Phaser.GameObjects.Image
+    coinsnumber: Phaser.GameObjects.Text;
 
-    factor = 0.4;
+    factor:number = 0.4;
 
     params: Params; 
 
@@ -53,6 +54,7 @@ export default class Gameover extends Phaser.Scene{
         
         this.coinscounter = this.params.coins;
         console.log(this.coinscounter)
+        this.distancecounter = this.params.score
 
         this.coinsnumber = this.add.text(200, 55, "" + this.coinscounter,{
             fontFamily: "hillclimbracing",
@@ -94,16 +96,16 @@ export default class Gameover extends Phaser.Scene{
 
        
 
-        this.highscoretext = this.add.text(screenCenterX , screenCenterY - 200, "HIGHSCORE: " + this.params.highscore, {
+        // this.highscoretext = this.add.text(screenCenterX , screenCenterY - 200, "HIGHSCORE: " + this.params.highscore, {
                     
-            fontFamily: "hillclimbracing",
-            fontSize: "60px",
-            color: "#FFFFFF",
-            align: "center",
-            stroke: "#000000",
-            strokeThickness: 10
+        //     fontFamily: "hillclimbracing",
+        //     fontSize: "60px",
+        //     color: "#FFFFFF",
+        //     align: "center",
+        //     stroke: "#000000",
+        //     strokeThickness: 10
             
-        }).setOrigin(0.5)
+        // }).setOrigin(0.5)
 
         // this.highscoretext2 = this.add.text(screenCenterX + 500, screenCenterY - 200, this.params.highscore.toString(), {
                     
@@ -117,7 +119,7 @@ export default class Gameover extends Phaser.Scene{
         // }).setOrigin(0.5)
        
 
-        this.scoretext = this.add.text(screenCenterX , screenCenterY - 100, "SCORE:                                 " + Math.round(this.coinscounter / 10) + " m", {
+        this.scoretext = this.add.text(screenCenterX , screenCenterY - 100, "SCORE:                                 " + Math.round(this.distancecounter/10) + " m", {
                     
             fontFamily: "hillclimbracing",
             fontSize: "60px",

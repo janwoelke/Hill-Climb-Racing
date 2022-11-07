@@ -14,14 +14,14 @@ export class Car {
     matterEngine: Matter.Body;
     // matterCharacter: Matter.Body[] = []; 
 
-    colorstring;
-    wheeloffset1;
-    wheeloffset2;
+    colorstring:string;
+    wheeloffset1:number
+    wheeloffset2:number
     characterplay;
     rimplay;
     
-    friction;
-    wheelYOffset;
+    friction:number
+    wheelYOffset:number
     
 
     matterCar: Matter.Composite;

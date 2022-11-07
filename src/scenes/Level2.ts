@@ -34,14 +34,16 @@ export default class Level2 extends Phaser.Scene {
     coinscounter;
 
     //Distance
+    
+
     distance: Phaser.GameObjects.Text;
     distancenumber: Phaser.GameObjects.Text;
-    distancecounter = 0;
-    distancehighscore;
+    distancecounter: number = 0;
+    distancehighscore: number;
 
     //Fuel
     fuelnumber: Phaser.GameObjects.Text;
-    fuelcounter = 3;
+    fuelcounter = 100;
 
     params: Params;
 
@@ -51,16 +53,16 @@ export default class Level2 extends Phaser.Scene {
     private paralaxbackgrounds: {ratioX: number, sprite: Phaser.GameObjects.TileSprite} [] = []
 
     //Settings
-    settings;
-    settingsetting;
-    settingmenu;
-    settingresume;
-    settingrect;
-    resumebutton;
+   
+    settingsetting: Phaser.GameObjects.Rectangle;
+    settingmenu: Phaser.GameObjects.Rectangle;
+    settingresume: Phaser.GameObjects.Rectangle;
+    settingrect: Phaser.GameObjects.Rectangle;
+    resumebutton: Phaser.GameObjects.Rectangle;
 
-    settingtext;
-    settingmenutext;
-    settingresumetext;
+    settingtext: Phaser.GameObjects.Text;
+    settingmenutext: Phaser.GameObjects.Text;
+    settingresumetext: Phaser.GameObjects.Text;
 
     fueltank: number;
     enginepower: number;
@@ -202,7 +204,7 @@ export default class Level2 extends Phaser.Scene {
         
         this.add.image(15, 15, "coin").setOrigin(0,0).setScale(0.15).setScrollFactor(0).setDepth(3)
         this.add.image(1820 ,15, "settings").setOrigin(0,0).setScale(0.155).setScrollFactor(0).setDepth(3)
-        this.add.image(screenCenterX + 600, screenCenterY - 525, "fuel").setOrigin(0,0).setScale(0.15).setScrollFactor(0).setDepth(3)
+        this.add.image(1540, 15, "fuel").setOrigin(0,0).setScale(0.15).setScrollFactor(0).setDepth(3)
 
         this.fuelcounter = 100;
         this.params.score = this.distancecounter;
@@ -352,7 +354,7 @@ export default class Level2 extends Phaser.Scene {
             stroke: "#000000",
             strokeThickness: 10,
 
-        }).setScrollFactor(0).setOrigin(0.5)
+        }).setScrollFactor(0).setOrigin(0.5).setDepth(+3)
         
         this.distancenumber = this.add.text(screenCenterX, 120, "" + this.distancecounter, {
 
@@ -364,7 +366,7 @@ export default class Level2 extends Phaser.Scene {
             stroke: "#000000",
             strokeThickness: 10,
 
-        }).setScrollFactor(0).setOrigin(0.5)
+        }).setScrollFactor(0).setOrigin(0.5).setDepth(+3)
 
 
         this.fuelnumber = this.add.text(1700,55, "" + this.fuelcounter + " %",{
@@ -493,7 +495,7 @@ export default class Level2 extends Phaser.Scene {
         if(collectables.texture.key == "coin") {
             
             collectables.destroy(true)
-            this.coinscounter++;
+            this.coinscounter = this.coinscounter + 5
             this.coinsnumber.setText("" + this.coinscounter)
             
         }else if(collectables.texture.key == "fuel"){
@@ -509,7 +511,7 @@ export default class Level2 extends Phaser.Scene {
         }else if(collectables.texture.key == "flag"){
             let params: Params = {
                     
-                coins: this.coinscounter,
+                coins: this.coinscounter + 300,
                 fuel: this.params.fuel,
                 highscore: this.params.highscore,
                 highscore2: this.params.highscore2,
@@ -757,7 +759,6 @@ export default class Level2 extends Phaser.Scene {
         if(this.fuelcounter < 0){
             this.fuelcounter = 0;
 
-
         }
 
         if(this.fuelcounter <= 0){
@@ -768,7 +769,7 @@ export default class Level2 extends Phaser.Scene {
                 highscore: this.params.highscore,
                 highscore2: this.params.highscore2,
                 highscore3: this.params.highscore3,
-                score: this.params.score,
+                score: this.distancecounter,
                 carcolor: this.params.carcolor,
                 carcolor2: this.params.carcolor2,
                 map: this.params.map,
@@ -806,7 +807,49 @@ export default class Level2 extends Phaser.Scene {
 
         }
        
-
+        if(wheelA.position.y > 2000){
+            let params: Params = {
+                    
+                coins: this.coinscounter,
+                fuel: this.params.fuel,
+                highscore: this.params.highscore,
+                highscore2: this.params.highscore2,
+                highscore3: this.params.highscore3,
+                score: this.distancecounter,
+                carcolor: this.params.carcolor,
+                carcolor2: this.params.carcolor2,
+                map: this.params.map,
+                vehicle: this.params.vehicle,
+                fuellevel: this.params.fuellevel,
+                enginelevel: this.params.enginelevel,
+                accelerationlevel: this.params.accelerationlevel,
+                wheellevel: this.params.wheellevel,
+                fuellevel2: this.params.fuellevel2,
+                enginelevel2: this.params.enginelevel2,
+                accelerationlevel2: this.params.accelerationlevel2,
+                wheellevel2: this.params.wheellevel2,
+                character: this.params.character,
+                rim: this.params.rim,
+                bluestatus: this.params.bluestatus,
+                greystatus: this.params.greystatus,
+                greenstatus: this.params.greenstatus,
+                yellowstatus: this.params.yellowstatus,
+                sportstatus: this.params.sportstatus,
+                bbsstatus: this.params.bbsstatus,
+                hobbesstatus: this.params.hobbesstatus,
+                calvinstatus: this.params.calvinstatus,
+                wheellevel3: this.params.wheellevel3,
+                fuellevel3: this.params.fuellevel3,
+                accelerationlevel3: this.params.accelerationlevel3,
+                enginelevel3: this.params.enginelevel3,
+                friction: this.params.friction,
+                accelerationoffset: this.params.accelerationoffset,
+                enginepower : this.params.enginepower,
+                fueltank: this.params.fueltank
+                    
+                }
+            this.scene.start("Gameover", this.params)
+        }
 
 
 }

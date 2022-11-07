@@ -8,78 +8,78 @@ export default class Menu extends Phaser.Scene {
     muted = true;
     clicksound;
     clicksound2;
-    shoprect;
-    shoptext;
-    shopimg;
-    maprect;
-    maptext;
-    mapimg;
-    vehiclerect;
-    vehicletext;
-    vehicleimg;
-    tuningrect;
-    tuningtext;
-    tuningimg;
-    startrect;
-    starttext;
-    startimg;
+    shoprect: Phaser.GameObjects.Rectangle;
+    shoptext: Phaser.GameObjects.Text;
+    shopimg: Phaser.GameObjects.Image;
+    maprect: Phaser.GameObjects.Rectangle;
+    maptext: Phaser.GameObjects.Text;
+    mapimg: Phaser.GameObjects.Image;
+    vehiclerect: Phaser.GameObjects.Rectangle;
+    vehicletext: Phaser.GameObjects.Text;
+    vehicleimg: Phaser.GameObjects.Image;
+    tuningrect: Phaser.GameObjects.Rectangle;
+    tuningtext: Phaser.GameObjects.Text;
+    tuningimg: Phaser.GameObjects.Image;
+    startrect: Phaser.GameObjects.Rectangle;
+    starttext: Phaser.GameObjects.Text;
+    startimg: Phaser.GameObjects.Image;
 
 
 
-    wheelrect;
-    wheelrect2;
-    wheelimg;
-    wheeltext;
-    accelerationrect;
-    accelerationrect2;
-    accelerationimg;
-    accelerationtext;
-    enginerect;
-    enginerect2;
-    enginetext;
-    engineimg;
-    fuelimg;
-    fuelrect;
-    fuelrect2;
-    fueltext;
+    wheelrect: Phaser.GameObjects.Rectangle;
+    wheelrect2: Phaser.GameObjects.Rectangle;
+    wheelimg: Phaser.GameObjects.Image;
+    wheeltext: Phaser.GameObjects.Text;
+    accelerationrect: Phaser.GameObjects.Rectangle;
+    accelerationrect2: Phaser.GameObjects.Rectangle;
+    accelerationimg: Phaser.GameObjects.Image;
+    accelerationtext: Phaser.GameObjects.Text;
+    enginerect: Phaser.GameObjects.Rectangle;
+    enginerect2: Phaser.GameObjects.Rectangle;
+    enginetext: Phaser.GameObjects.Text;
+    engineimg: Phaser.GameObjects.Image;
+    fuelimg: Phaser.GameObjects.Image;
+    fuelrect: Phaser.GameObjects.Rectangle;
+    fuelrect2: Phaser.GameObjects.Rectangle;
+    fueltext: Phaser.GameObjects.Text;
     
     
-    wheellevel = 1;
-    accelerationlevel = 1;
-    enginelevel = 1;
-    fuellevel = 1;
+    wheellevel: number = 1;
+    accelerationlevel: number = 1;
+    enginelevel: number = 1;
+    fuellevel: number = 1;
 
-    wheeltuningtext;
-    accelerationtuningtext;
-    enginetuningtext;
-    fueltuningtext;
-    wheeltuningtext2;
-    accelerationtuningtext2;
-    enginetuningtext2;
-    fueltuningtext2;
+    wheeltuningtext: Phaser.GameObjects.Text;
+    accelerationtuningtext: Phaser.GameObjects.Text;
+    enginetuningtext: Phaser.GameObjects.Text;
+    fueltuningtext: Phaser.GameObjects.Text;
+    wheeltuningtext2: Phaser.GameObjects.Text;
+    accelerationtuningtext2: Phaser.GameObjects.Text;
+    enginetuningtext2: Phaser.GameObjects.Text;
+    fueltuningtext2: Phaser.GameObjects.Text;
 
     wheel_cost;
-    wheel_cost_text;
-    wheel_cost_text2;
+    wheel_cost_text: Phaser.GameObjects.Text;
+    wheel_cost_text2: Phaser.GameObjects.Text;
     acceleration_cost;
-    acceleration_cost_text;
-    acceleration_cost_text2;
+    acceleration_cost_text: Phaser.GameObjects.Text;
+    acceleration_cost_text2: Phaser.GameObjects.Text;
     engine_cost;
-    engine_cost_text;
-    engine_cost_text2;
+    engine_cost_text: Phaser.GameObjects.Text;
+    engine_cost_text2: Phaser.GameObjects.Text;
     fuel_cost;
-    fuel_cost_text;
-    fuel_cost_text2;
+    fuel_cost_text: Phaser.GameObjects.Text;
+    fuel_cost_text2: Phaser.GameObjects.Text;
 
-    buyingrect;
-    buying_button;
-    x_button;
-    x_image;
-    nocoins_text;
-    max_text;
-    max_text2;
-    max_text3;
-    max_text4;
+    buyingrect: Phaser.GameObjects.Rectangle;
+    buying_button: Phaser.GameObjects.Rectangle;
+    x_button: Phaser.GameObjects.Rectangle;
+    x_image: Phaser.GameObjects.Image;
+    nocoins_text: Phaser.GameObjects.Text;
+    max_text: Phaser.GameObjects.Text;
+    max_text2: Phaser.GameObjects.Text;
+    max_text3: Phaser.GameObjects.Text;
+    max_text4: Phaser.GameObjects.Text;
 
     //Fahrzeugfarben
     colorrect: Phaser.GameObjects.Rectangle;
@@ -92,7 +92,7 @@ export default class Menu extends Phaser.Scene {
     colortext: Phaser.GameObjects.Text;
     colortext2: Phaser.GameObjects.Text;
     color_cost;
-    color_red;
+    color_red: Phaser.GameObjects.Rectangle;
 
     //Character
     characterrect: Phaser.GameObjects.Rectangle;
@@ -109,10 +109,10 @@ export default class Menu extends Phaser.Scene {
     charactercostext: Phaser.GameObjects.Text;
 
     //jeweils zuständig für die Anzeige des Tuning Fortschritts
-    wheelleveltext;
-    accelerationleveltext;
-    engineleveltext;
-    fuelleveltext;
+    wheelleveltext: Phaser.GameObjects.Text;
+    accelerationleveltext: Phaser.GameObjects.Text;
+    engineleveltext: Phaser.GameObjects.Text;
+    fuelleveltext: Phaser.GameObjects.Text;
 
     //gibt das Maximale Level aller Tuningkomponenten an 
     maxtuning: number = 3;
@@ -131,27 +131,32 @@ export default class Menu extends Phaser.Scene {
     rimprice: number = 100;
     rimpricetext: Phaser.GameObjects.Text;
 
-    middletext;
-    middlerect;
-    middleobj;
+    middletext: Phaser.GameObjects.Text;
+    middlerect: Phaser.GameObjects.Rectangle;
+    middleobj: Phaser.GameObjects.Image;
 
     coinobj;
-    cointext;
-    fuelcounter;
-    coinscounter;
-    coinsnumber;
+    cointext: Phaser.GameObjects.Text;
+    fuelcounter: number;
+    coinscounter: number;
+    coinsnumber: Phaser.GameObjects.Text;
 
-    friction;
-    accelerationoffset;
-    fueltank;
-    enginepower;
+    friction: number;
+    accelerationoffset: number;
+    fueltank: number;
+    enginepower: number;
+
+    wheelstatus: string = "locked"
+    enginestatus:string = "locked"
+    accelerationstatus:string = "locked"
+    fuelstatus:string = "locked"
 
     buyrect: Phaser.GameObjects.Rectangle;
     buytext: Phaser.GameObjects.Text;
     textyes: Phaser.GameObjects.Text;
     textno: Phaser.GameObjects.Text;
 
-    costs;
+    costs: number;
 
     arrowleft;
     arrowright;
@@ -404,7 +409,7 @@ export default class Menu extends Phaser.Scene {
             strokeThickness: 10
             
         }).setOrigin(0.5).setDepth(+3).setVisible(false)
-        this.rimpricetext = this.add.text(screenCenterX, screenCenterY + 200, "PRICE: " + this.rimprice + "  COINS", {
+        this.rimpricetext = this.add.text(screenCenterX, screenCenterY + 200, "PRICE: " +  "  FREE", {
             
             fontFamily: "hillclimbracing",
             fontSize: "40px",
@@ -457,7 +462,7 @@ export default class Menu extends Phaser.Scene {
         this.steve = this.add.image(this.characterrect2.x, this.characterrect2.y, "steve").setVisible(false).setDepth(+5)
         this.calvin = this.add.image(this.characterrect2.x + this.characterrect2.x / 3 - 50, this.characterrect2.y, "calvin").setVisible(false).setDepth(+5).setScale(0.8)
         
-        this.charactercostext = this.add.text(this.characterrect2.x, this.steve.y + 200, "PRICE: " + this.charactercost + "  COINS", {
+        this.charactercostext = this.add.text(this.characterrect2.x, this.steve.y + 200, "PRICE: " + "  FREE", {
             
             fontFamily: "hillclimbracing",
             fontSize: "40px",
@@ -611,8 +616,9 @@ export default class Menu extends Phaser.Scene {
             
         }).setOrigin(0.5).setVisible(false)
 
-        if(this.params.wheellevel3 == 1 && this.params.wheellevel2 == 0 && this.params.wheellevel == 0){
-            this.max_text.setVisible(true)
+        if(this.params.wheellevel3 == 1 && this.params.wheellevel2 == 0 && this.params.wheellevel == 0 || this.wheellevel == 3){
+            
+            this.wheellevel = 3
             this.wheel_cost_text.setVisible(false) 
             this.friction = 1 
             
@@ -624,8 +630,9 @@ export default class Menu extends Phaser.Scene {
             this.friction = 0.2
         }
 
-        if(this.params.accelerationlevel3 == 1 && this.params.accelerationlevel2 == 0 && this.params.accelerationlevel == 0){
-            this.max_text.setVisible(true)
+        if(this.params.accelerationlevel3 == 1 && this.params.accelerationlevel2 == 0 && this.params.accelerationlevel == 0|| this.accelerationlevel == 3){
+            
+            this.accelerationlevel = 3
             this.acceleration_cost_text.setVisible(false) 
             this.accelerationoffset = 155
         }else if(this.params.accelerationlevel2 == 1 && this.params.accelerationlevel == 0 && this.params.accelerationlevel3 == 0){
@@ -636,8 +643,9 @@ export default class Menu extends Phaser.Scene {
             this.accelerationoffset = 135
         }
 
-        if(this.params.fuellevel3 == 1 && this.params.fuellevel2 == 0 && this.params.fuellevel == 0){
-            this.max_text.setVisible(true)
+        if(this.params.fuellevel3 == 1 && this.params.fuellevel2 == 0 && this.params.fuellevel == 0|| this.fuellevel == 3){
+           
+            this.fuellevel = 3
             this.fuel_cost_text.setVisible(false) 
             this.fueltank = 2
         }else if(this.params.fuellevel2 == 1 && this.params.fuellevel == 0 && this.params.fuellevel3 == 0){
@@ -648,8 +656,9 @@ export default class Menu extends Phaser.Scene {
             this.fueltank = 1
         }
 
-        if(this.params.enginelevel3 == 1 && this.params.enginelevel2 == 0 && this.params.enginelevel == 0){
-            this.max_text.setVisible(true)
+        if(this.params.enginelevel3 == 1 && this.params.enginelevel2 == 0 && this.params.enginelevel == 0|| this.enginelevel == 3){
+            
+            this.enginelevel = 3
             this.engine_cost_text.setVisible(false) 
             this.enginepower = 0.6
         }else if(this.params.enginelevel2 == 1 && this.params.enginelevel == 0 && this.params.enginelevel3 == 0){
@@ -995,6 +1004,11 @@ export default class Menu extends Phaser.Scene {
                     this.acceleration_cost_text2.setVisible(false)
                     this.engine_cost_text2.setVisible(false)
                     this.fuel_cost_text2.setVisible(false)
+                    this.max_text.setVisible(false)
+                    this.max_text2.setVisible(false)
+                    this.max_text3.setVisible(false)
+                    this.max_text4.setVisible(false)
+
                     this.middlerect.fillColor = 0xadd8e6; 
                     this.sound.play("click2")
                     this.vehiclerect.y = screenCenterY + 175;
@@ -1170,6 +1184,10 @@ export default class Menu extends Phaser.Scene {
             this.engine_cost_text.setVisible(false)
             this.fuel_cost_text.setVisible(false)
             this.nocoins_text.setVisible(false)
+            this.max_text.setVisible(false)
+                    this.max_text2.setVisible(false)
+                    this.max_text3.setVisible(false)
+                    this.max_text4.setVisible(false)
             this.middlerect.fillColor = 0x000000; 
             this.sound.play("click2")        
             this.vehiclerect.y = screenCenterY + 200;
@@ -1332,8 +1350,8 @@ export default class Menu extends Phaser.Scene {
 
         this.mapimg = this.add.image(screenCenterX-280, screenCenterY + 115, "map").setScale(0.15).setRotation(0)
 
-        this.buyingrect = this.add.rectangle(screenCenterX, screenCenterY, 800, 500, 0x565656).setStrokeStyle(5, 0x000000, 1).setDepth(+1).setVisible(false)
-        this.buying_button = this.add.rectangle(screenCenterX,screenCenterY + 175, 725 ,100, 0x49B675  ).setStrokeStyle(5, 0x000000, 1).setDepth(+1).setVisible(false)
+        this.buyingrect = this.add.rectangle(screenCenterX, screenCenterY, 800, 500, 0x565656).setStrokeStyle(5, 0x000000, 1).setDepth(+2).setVisible(false)
+        this.buying_button = this.add.rectangle(screenCenterX,screenCenterY + 175, 725 ,100, 0x49B675  ).setStrokeStyle(5, 0x000000, 1).setDepth(+2).setVisible(false)
         this.x_image =  this.add.image(screenCenterX + 350, screenCenterY - 200, "x_icon").setDepth(+3).setScale(0.15).setVisible(false)
         this.x_button = this.add.rectangle(screenCenterX+ 350,screenCenterY - 200 , 75, 75, 0x000000,0).setDepth(+2).setVisible(false).setInteractive().on("pointerdown", () => {
             this.buyingrect.setVisible(false);
@@ -1348,11 +1366,20 @@ export default class Menu extends Phaser.Scene {
             this.enginetuningtext2.setVisible(false)
             this.fueltuningtext.setVisible(false)
             this.fueltuningtext2.setVisible(false)
+            this.wheel_cost_text2.setVisible(false)
+            this.acceleration_cost_text2.setVisible(false)
+            this.engine_cost_text2.setVisible(false)
+            this.fuel_cost_text2.setVisible(false)
 
             this.colortext.setVisible(false)
             this.colorrect.setVisible(false)
 
             this.nocoins_text.setVisible(false)
+
+            this.wheelstatus = "locked"
+            this.enginestatus = "locked"
+            this.accelerationstatus = "locked"
+            this.fuelstatus = "locked"
             
 
             
@@ -1417,14 +1444,71 @@ export default class Menu extends Phaser.Scene {
             this.arrowleft.setVisible(false);
             this.arrowright.setVisible(false);
             
+            if(this.params.wheellevel3 == 1 && this.params.wheellevel2 == 0 && this.params.wheellevel == 0){
+                this.wheel_cost_text.setVisible(false)  
+                this.max_text.setVisible(true)
+                this.wheelleveltext.setText(3 + "/" + this.maxtuning)
+            }else if(this.params.wheellevel2 == 1 && this.params.wheellevel == 0 && this.params.wheellevel3 == 0){
+                this.wheel_cost = 400;
+                this.wheel_cost_text.setText(this.wheel_cost)
+                this.wheelleveltext.setText(2 + "/" + this.maxtuning)
+            }else if(this.params.wheellevel == 1 && this.params.wheellevel2 == 0 && this.params.wheellevel3 == 0){
+                this.wheel_cost = 200;
+                this.wheel_cost_text.setText(this.wheel_cost)
+                this.wheelleveltext.setText(1 + "/" + this.maxtuning)
+            }
+            if(this.params.accelerationlevel3 == 1 && this.params.accelerationlevel2 == 0 && this.params.accelerationlevel == 0){
+                this.acceleration_cost_text.setVisible(false)  
+                this.max_text2.setVisible(true)
+                this.accelerationleveltext.setText(3 + "/" + this.maxtuning)
+            }else if(this.params.accelerationlevel2 == 1 && this.params.accelerationlevel == 0 && this.params.accelerationlevel3 == 0){
+                this.acceleration_cost = 400;
+                this.acceleration_cost_text.setText(this.acceleration_cost)
+                this.accelerationleveltext.setText(2 + "/" + this.maxtuning)
+            }else if(this.params.accelerationlevel == 1 && this.params.accelerationlevel2 == 0 && this.params.accelerationlevel3 == 0){
+                this.acceleration_cost = 200;
+                this.acceleration_cost_text.setText(this.acceleration_cost)
+                this.accelerationleveltext.setText(1 + "/" + this.maxtuning)
+            }
+            if(this.params.enginelevel3 == 1 && this.params.enginelevel2 == 0 && this.params.enginelevel == 0){
+                this.engine_cost_text.setVisible(false) 
+                this.max_text3.setVisible(true) 
+                this.engineleveltext.setText(3 + "/" + this.maxtuning)
+            }else if(this.params.enginelevel2 == 1 && this.params.enginelevel == 0 && this.params.enginelevel3 == 0){
+                this.engine_cost = 400;
+                this.engine_cost_text.setText(this.engine_cost)
+                this.engineleveltext.setText(2 + "/" + this.maxtuning)
+            }else if(this.params.wheellevel == 1 && this.params.enginelevel2 == 0 && this.params.enginelevel3 == 0){
+                this.engine_cost = 200;
+                this.engine_cost_text.setText(this.engine_cost)
+                this.engineleveltext.setText(1 + "/" + this.maxtuning)
+            }
+            if(this.params.fuellevel3 == 1 && this.params.fuellevel2 == 0 && this.params.fuellevel == 0){
+                this.fuel_cost_text.setVisible(false)  
+                this.max_text4.setVisible(true)
+                this.fuelleveltext.setText(3 + "/" + this.maxtuning)
+            }else if(this.params.fuellevel2 == 1 && this.params.fuellevel == 0 && this.params.fuellevel3 == 0){
+                this.fuel_cost = 400;
+                this.fuel_cost_text.setText(this.fuel_cost)
+                this.fuelleveltext.setText(2 + "/" + this.maxtuning)
+            }else if(this.params.fuellevel == 1 && this.params.fuellevel2 == 0 && this.params.fuellevel3 == 0){
+                this.fuel_cost = 200;
+                this.fuel_cost_text.setText(this.fuel_cost)
+                this.fuelleveltext.setText(1 + "/" + this.maxtuning)
+            }
+            
+
             
             this.wheel_cost_text.setVisible(true)
+
             
 
             this.wheelrect.setVisible(true).setInteractive().on("pointerdown", () =>{
                this.buyingrect.setVisible(true);
+               this.wheelstatus = "unlocked";
                if(this.params.wheellevel3 == 1 && this.params.wheellevel2 == 0 && this.params.wheellevel == 0){
-                this.wheel_cost_text2.setVisible(false)  
+                this.wheel_cost = 0;
+                this.wheel_cost_text2.setText("--")
             }else if(this.params.wheellevel2 == 1 && this.params.wheellevel == 0 && this.params.wheellevel3 == 0){
                 this.wheel_cost = 400;
                 this.wheel_cost_text2.setText(this.wheel_cost)
@@ -1437,7 +1521,7 @@ export default class Menu extends Phaser.Scene {
 
 
                this.buying_button.setVisible(true).setInteractive().on("pointerdown", () =>{
-                if(this.coinscounter >= this.wheel_cost && this.params.wheellevel == 1 || this.params.wheellevel2 == 1) {
+                if(this.coinscounter >= this.wheel_cost && this.wheelstatus == "unlocked" ) {
                     this.params.coins = this.params.coins - this.wheel_cost;
                     this.coinscounter = this.params.coins
                     this.coinsnumber.setText("" + this.coinscounter)
@@ -1446,8 +1530,9 @@ export default class Menu extends Phaser.Scene {
                     this.wheel_cost_text2.setVisible(false)
                     this.wheeltuningtext.setVisible(false)
                     this.wheeltuningtext2.setVisible(false)
+                    
                     this.x_image.setVisible(false)
-
+                    this.wheelstatus = "locked"
 
                     if(this.params.wheellevel3 == 1 && this.params.wheellevel2 == 0 && this.params.wheellevel == 0){
                         this.params.wheellevel = 0
@@ -1487,8 +1572,9 @@ export default class Menu extends Phaser.Scene {
                     }
                     
 
-                }else if(this.params.coins < this.wheel_cost && this.params.wheellevel3 == 0){
-                    this.nocoins_text.setVisible(true)
+                }else if( this.params.wheellevel3 == 0 || this.params.coins < this.wheel_cost){
+                    
+                    this.wheelstatus = "locked"
                     
                 }
                });
@@ -1514,14 +1600,17 @@ export default class Menu extends Phaser.Scene {
      
 
             this.wheelrect2.setVisible(true)
-
+           
             this.acceleration_cost_text.setVisible(true)
             
             this.accelerationrect.setVisible(true).setInteractive().on("pointerdown", () =>{
                 this.buyingrect.setVisible(true);
+                this.accelerationstatus = "unlocked"
                 if(this.params.accelerationlevel3 == 1 && this.params.accelerationlevel2 == 0 && this.params.accelerationlevel == 0){
-                    this.acceleration_cost_text2.setVisible(false)  
+                      
                     this.max_text2.setVisible(true)
+                    this.acceleration_cost = 0;
+                    this.acceleration_cost_text2.setText("--")
                     
                 }else if(this.params.accelerationlevel2 == 1 && this.params.accelerationlevel == 0 && this.params.accelerationlevel3 == 0){
                     this.acceleration_cost = 400;
@@ -1534,7 +1623,7 @@ export default class Menu extends Phaser.Scene {
                 }
                 
                this.buying_button.setVisible(true).setInteractive().on("pointerdown", () =>{
-                if(this.coinscounter >= this.acceleration_cost && this.params.accelerationlevel == 1 || this.params.accelerationlevel2 == 1) {
+                if(this.coinscounter >= this.acceleration_cost && this.accelerationstatus == "unlocked") {
                     this.params.coins = this.params.coins - this.acceleration_cost;
                     this.coinscounter = this.params.coins
                     this.coinsnumber.setText("" + this.coinscounter)
@@ -1544,7 +1633,7 @@ export default class Menu extends Phaser.Scene {
                     this.accelerationtuningtext.setVisible(false)
                     this.accelerationtuningtext2.setVisible(false)
                     this.x_image.setVisible(false)
-
+                    this.accelerationstatus = "locked"
                     if(this.params.accelerationlevel3 == 1 && this.params.accelerationlevel2 == 0 && this.params.accelerationlevel == 0){
                         this.params.accelerationlevel = 0
                         this.params.accelerationlevel2 = 0
@@ -1584,8 +1673,8 @@ export default class Menu extends Phaser.Scene {
                     
 
                 }else if(this.params.coins < this.acceleration_cost && this.params.accelerationlevel3 == 0){
-                    this.nocoins_text.setVisible(true)
                     
+                    this.accelerationstatus = "locked"
                 }
                });
                
@@ -1610,8 +1699,10 @@ export default class Menu extends Phaser.Scene {
 
             this.enginerect.setVisible(true).setInteractive().on("pointerdown", () =>{
                 this.buyingrect.setVisible(true);
+                this.enginestatus = "unlocked"
                 if(this.params.enginelevel3 == 1 && this.params.enginelevel2 == 0 && this.params.enginelevel == 0){
-                    this.engine_cost_text2.setVisible(false)  
+                    this.engine_cost = 0;
+                    this.engine_cost_text2.setText("--")
                     this.max_text3.setVisible(true)
                     
                 }else if(this.params.enginelevel2 == 1 && this.params.enginelevel == 0 && this.params.enginelevel3 == 0){
@@ -1626,7 +1717,7 @@ export default class Menu extends Phaser.Scene {
 
 
                 this.buying_button.setVisible(true).setInteractive().on("pointerdown", () =>{
-                    if(this.coinscounter >= this.engine_cost && this.params.enginelevel == 1 || this.params.enginelevel2 == 1) {
+                    if(this.coinscounter >= this.engine_cost && this.enginestatus == "unlocked") {
                         this.params.coins = this.params.coins - this.engine_cost;
                         this.coinscounter = this.params.coins
                         this.coinsnumber.setText("" + this.coinscounter)
@@ -1636,7 +1727,7 @@ export default class Menu extends Phaser.Scene {
                         this.enginetuningtext.setVisible(false)
                         this.enginetuningtext2.setVisible(false)
                         this.x_image.setVisible(false)
-    
+                        this.enginestatus = "locked"
                         if(this.params.enginelevel3 == 1 && this.params.enginelevel2 == 0 && this.params.enginelevel == 0){
                             this.params.enginelevel = 0
                             this.params.enginelevel2 = 0
@@ -1676,8 +1767,8 @@ export default class Menu extends Phaser.Scene {
                         
     
                     }else if(this.params.coins < this.engine_cost && this.params.enginelevel3 == 0){
-                        this.nocoins_text.setVisible(true)
                         
+                        this.enginestatus = "locked"
                     }
                    });
 
@@ -1708,8 +1799,10 @@ export default class Menu extends Phaser.Scene {
 
             this.fuelrect.setVisible(true).setStrokeStyle(5, 0x000000, 1).setInteractive().on("pointerdown", () =>{
                 this.buyingrect.setVisible(true);
+                this.fuelstatus = "unlocked"
                 if(this.params.fuellevel3 == 1 && this.params.fuellevel2 == 0 && this.params.fuellevel == 0){
-                    this.fuel_cost_text2.setVisible(false)  
+                    this.fuel_cost = 0;
+                    this.fuel_cost_text2.setText("--") 
                     this.max_text4.setVisible(true)
                     
                 }else if(this.params.fuellevel2 == 1 && this.params.fuellevel == 0 && this.params.fuellevel3 == 0){
@@ -1722,7 +1815,7 @@ export default class Menu extends Phaser.Scene {
                     
                 }
                 this.buying_button.setVisible(true).setInteractive().on("pointerdown", () =>{
-                    if(this.coinscounter >= this.fuel_cost && this.params.fuellevel == 1 || this.params.fuellevel2 == 1) {
+                    if(this.coinscounter >= this.fuel_cost && this.fuelstatus == "unlocked") {
                         this.params.coins = this.params.coins - this.fuel_cost;
                         this.coinscounter = this.params.coins
                         this.coinsnumber.setText("" + this.coinscounter)
@@ -1732,7 +1825,7 @@ export default class Menu extends Phaser.Scene {
                         this.fueltuningtext.setVisible(false)
                         this.fueltuningtext2.setVisible(false)
                         this.x_image.setVisible(false)
-    
+                        this.fuelstatus = "locked"
                         if(this.params.fuellevel3 == 1 && this.params.fuellevel2 == 0 && this.params.fuellevel == 0){
                             this.params.fuellevel = 0
                             this.params.fuellevel2 = 0
@@ -1772,8 +1865,8 @@ export default class Menu extends Phaser.Scene {
                         
     
                     }else if(this.params.coins < this.fuel_cost && this.params.fuellevel3 == 0){
-                        this.nocoins_text.setVisible(true)
-                        
+                       
+                        this.fuelstatus = "locked"
                     }
                    });
                 this.x_button.setVisible(true);
@@ -1829,6 +1922,10 @@ export default class Menu extends Phaser.Scene {
                     this.acceleration_cost_text2.setVisible(false)
                     this.engine_cost_text2.setVisible(false)
                     this.fuel_cost_text2.setVisible(false)
+                    this.max_text.setVisible(false)
+                    this.max_text2.setVisible(false)
+                    this.max_text3.setVisible(false)
+                    this.max_text4.setVisible(false)
             this.rimrect.setVisible(true).setInteractive().on("pointerdown", () => {
 
                 this.greenlock.setVisible(false)

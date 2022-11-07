@@ -163,7 +163,7 @@ export default class Startscreen extends Phaser.Scene {
         this.Enterevent.on("down", function() {
 
                 let params: Params = {
-                    coins: 1000,
+                    coins: 100,
                     fuel: 0,
                     highscore: 0,
                     highscore2: 0,

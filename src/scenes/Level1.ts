@@ -36,12 +36,12 @@ export default class Level1 extends Phaser.Scene {
     //Distance
     distance: Phaser.GameObjects.Text;
     distancenumber: Phaser.GameObjects.Text;
-    distancecounter = 0;
-    distancehighscore;
+    distancecounter: number = 0;
+    distancehighscore: number;
 
     //Fuel
     fuelnumber: Phaser.GameObjects.Text;
-    fuelcounter = 3;
+    fuelcounter = 100;
 
     params: Params;
 
@@ -51,16 +51,16 @@ export default class Level1 extends Phaser.Scene {
     private paralaxbackgrounds: {ratioX: number, sprite: Phaser.GameObjects.TileSprite} [] = []
 
     //Settings
-    settings;
-    settingsetting;
-    settingmenu;
-    settingresume;
-    settingrect;
-    resumebutton;
+   
+    settingsetting: Phaser.GameObjects.Rectangle;
+    settingmenu: Phaser.GameObjects.Rectangle;
+    settingresume: Phaser.GameObjects.Rectangle;
+    settingrect: Phaser.GameObjects.Rectangle;
+    resumebutton: Phaser.GameObjects.Rectangle;
 
-    settingtext;
-    settingmenutext;
-    settingresumetext;
+    settingtext: Phaser.GameObjects.Text;
+    settingmenutext: Phaser.GameObjects.Text;
+    settingresumetext: Phaser.GameObjects.Text;
 
 
     fueltank: number;
@@ -203,7 +203,7 @@ export default class Level1 extends Phaser.Scene {
         
         this.add.image(0, 0, "level1_sky").setOrigin(0,0).setScale(2.5).setDepth(-3).setScrollFactor(0)
         this.add.image(15, 15, "coin").setOrigin(0,0).setScale(0.15).setScrollFactor(0).setDepth(3)
-        this.add.image(screenCenterX + 600, screenCenterY - 525, "fuel").setOrigin(0,0).setScale(0.15).setScrollFactor(0).setDepth(3)
+        this.add.image(1540, 15, "fuel").setOrigin(0,0).setScale(0.15).setScrollFactor(0).setDepth(3)
         this.add.image(1820 ,15, "settings").setOrigin(0,0).setScale(0.155).setScrollFactor(0).setDepth(3)
 
         this.fuelcounter = 100;
@@ -484,7 +484,7 @@ export default class Level1 extends Phaser.Scene {
         if(collectables.texture.key == "coin") {
             
             collectables.destroy(true)
-            this.coinscounter++;
+            this.coinscounter = this.coinscounter + 5
             this.coinsnumber.setText("" + this.coinscounter)
             
         }else if(collectables.texture.key == "fuel"){
@@ -500,12 +500,12 @@ export default class Level1 extends Phaser.Scene {
         }else if(collectables.texture.key == "flag"){
             let params: Params = {
                     
-                coins: this.coinscounter,
+                coins: this.coinscounter + 300,
                 fuel: this.params.fuel,
                 highscore: this.params.highscore,
                 highscore2: this.params.highscore2,
                 highscore3: this.params.highscore3,
-                score: this.params.score,
+                score: this.distancecounter,
                 carcolor: this.params.carcolor,
                 carcolor2: this.params.carcolor2,
                 map: this.params.map,
@@ -722,7 +722,7 @@ export default class Level1 extends Phaser.Scene {
                 highscore: this.params.highscore,
                 highscore2: this.params.highscore2,
                 highscore3: this.params.highscore3,
-                score: this.params.score,
+                score: this.distancecounter,
                 carcolor: this.params.carcolor,
                 carcolor2: this.params.carcolor2,
                 map: this.params.map,
