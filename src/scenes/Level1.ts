@@ -22,7 +22,7 @@ export default class Level1 extends Phaser.Scene {
     
 
 
-    spawnpoint;
+  
     
     //Steuerung
     cursors: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -41,7 +41,7 @@ export default class Level1 extends Phaser.Scene {
 
     //Fuel
     fuelnumber: Phaser.GameObjects.Text;
-    fuelcounter = 100;
+    fuelcounter: number = 100;
 
     params: Params;
 
@@ -73,10 +73,10 @@ export default class Level1 extends Phaser.Scene {
     // readonly ACCELERATION = this.MAX_SPEED / 130
     // readonly ACCELERATION_BACKWARDS = this.ACCELERATION * 0.75
 
-   max_speed = 0.4
-   max_speed_backwards = this.max_speed * 0.75
-   acceleration = this.max_speed / 130
-   acceleration_backwards = this.acceleration * 0.75
+   max_speed:number = 0.5
+   max_speed_backwards:number = this.max_speed * 0.75
+   acceleration:number = this.max_speed / 130
+   acceleration_backwards:number = this.acceleration * 0.75
 
     gas = {
         right: false,
@@ -582,13 +582,6 @@ export default class Level1 extends Phaser.Scene {
         let alpha = Number.parseInt(alphaAsString, 16)/255.0;
         
 
-        // let border_colorAsString: string = polygon.properties.border_color;
-        // border_colorAsString = border_colorAsString.replace("#", "");
-        // let borderalphaAsString = border_colorAsString.substring(0, 2);
-        // border_colorAsString = border_colorAsString.substring(2);
-        // let border_color = Number.parseInt(border_colorAsString, 16);
-        // let border_alpha = Number.parseInt(borderalphaAsString, 16)/255.0;
-
         // graphics.lineStyle(border_color, border_alpha);
         graphics.fillStyle(color, alpha);
         graphics.fillPoints(poly.points, true);
@@ -618,7 +611,7 @@ export default class Level1 extends Phaser.Scene {
 
         Matter.Composite.add(this.world, polygonBody);
 
-        console.log(this.params.enginepower)
+        
     }
 
     update(time: number, delta: number) {

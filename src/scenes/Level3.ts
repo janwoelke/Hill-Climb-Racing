@@ -41,7 +41,7 @@ export default class Level3 extends Phaser.Scene {
 
     //Fuel
     fuelnumber: Phaser.GameObjects.Text;
-    fuelcounter = 100;
+    fuelcounter:number = 100;
 
     params: Params;
 

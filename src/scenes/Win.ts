@@ -1,22 +1,22 @@
 export default class Win extends Phaser.Scene{
 
-    gameovertext;
+    gameovertext: Phaser.GameObjects.Text
    
    
-    highscoretext;
-    highscoretext2;
-    scoretext;
-    scoretext2;
+    highscoretext: Phaser.GameObjects.Text
+    highscoretext2: Phaser.GameObjects.Text
+    scoretext: Phaser.GameObjects.Text
+    scoretext2: Phaser.GameObjects.Text
     Fullscreenevent;
-    menurect;
-    menutext;
+    menurect: Phaser.GameObjects.Rectangle
+    menutext: Phaser.GameObjects.Text
 
-    cointext;
+    cointext: Phaser.GameObjects.Text
     coinscounter: number;
-    coinobj;
-    coinsnumber;
+    coinobj: Phaser.GameObjects.Image
+    coinsnumber: Phaser.GameObjects.Text
 
-    factor = 0.4;
+    factor: number = 0.4;
 
     params: Params; 
 

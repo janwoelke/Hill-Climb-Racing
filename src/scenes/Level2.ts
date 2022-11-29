@@ -31,7 +31,7 @@ export default class Level2 extends Phaser.Scene {
 
     //Coins
     coinsnumber: Phaser.GameObjects.Text;
-    coinscounter;
+    coinscounter: number;
 
     //Distance
     
@@ -43,7 +43,7 @@ export default class Level2 extends Phaser.Scene {
 
     //Fuel
     fuelnumber: Phaser.GameObjects.Text;
-    fuelcounter = 100;
+    fuelcounter: number = 100;
 
     params: Params;
 
